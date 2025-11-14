@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuarantineRush: Real NYC</title>
+    
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+
+    <div id="ui-layer">
+        <div class="panel top-left">
+            <h1 class="game-title">QUARANTINE<span class="danger">RUSH</span></h1>
+            <div class="sub-title">📍 MANHATTAN (PHOTOREALISTIC 3D)</div>
+        </div>
+        
+        <div class="panel top-right">
+            <button onclick="flyToStreet()" class="cam-btn">🏙️ STREET LEVEL</button>
+            <button onclick="flyToDrone()" class="cam-btn">🛰️ DRONE VIEW</button>
+        </div>
+
+        <div class="panel bottom-center">
+            <div class="stat-box">
+                <label>SYSTEM STATUS</label>
+                <span id="status-text" class="blink">SCANNING SECTOR...</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="cesiumContainer"></div>
+
+    <script src="src/js/map.js"></script>
+
+</body>
+</html>
