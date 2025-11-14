@@ -1,130 +1,118 @@
 /* Temel Ayarlar */
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #000;
-  font-family: 'Rajdhani', sans-serif;
-}
-
-/* Cesium Harita Kutusu */
-#cesiumContainer {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Cesium'un Kendi Logolarını Gizle (Daha temiz görünüm için) */
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Rajdhani', sans-serif; }
+#cesiumContainer { width: 100%; height: 100%; }
 .cesium-viewer-bottom { display: none; }
-.cesium-viewer-animationContainer, .cesium-viewer-timelineContainer { display: none !important; }
 
-/* Arayüz Katmanları (Öncekiyle aynı) */
-#ui-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
-
+/* PANELLER (Daha şeffaf ve küçük) */
 .panel {
-  position: absolute;
-  background: rgba(10, 10, 10, 0.8);
-  border: 1px solid #444;
-  padding: 15px;
-  color: white;
-  pointer-events: auto;
-  border-radius: 4px;
-  backdrop-filter: blur(5px);
+    position: absolute;
+    background: rgba(0, 0, 0, 0.75); /* Daha şeffaf */
+    border: 1px solid #00ffcc; /* İnce çerçeve */
+    padding: 8px 12px; /* Çok daha az boşluk */
+    color: white;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    z-index: 10;
 }
 
-.top-left { top: 20px; left: 20px; border-left: 4px solid red; }
-.top-right { top: 20px; right: 20px; display: flex; gap: 10px; }
-.bottom-center { bottom: 30px; left: 50%; transform: translateX(-50%); border-bottom: 4px solid red; }
-
-.game-title { margin: 0; font-size: 24px; letter-spacing: 2px; }
+/* SOL ÜST */
+.top-left { top: 10px; left: 10px; border-left: 3px solid red; }
+.game-title { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 1px; } 
+.sub-title { font-size: 10px; color: #aaa; font-weight: normal; }
 .danger { color: red; }
-.sub-title { font-size: 12px; color: #aaa; }
 
-.cam-btn {
-  background: #222; color: #0f0; border: 1px solid #0f0;
-  padding: 8px 15px; cursor: pointer; font-family: 'Rajdhani';
-}
-.cam-btn:hover { background: #0f0; color: black; }
-
-/* --- YENİ EKLENEN STİLLER --- */
-
-/* Orta Üst Panel (Skor ve Süre) */
-.top-center {
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 30px;
-  background: rgba(0, 0, 0, 0.9); /* Daha koyu zemin */
-  border: 2px solid #00ff00; /* Yeşil Çerçeve */
+/* ORTA ÜST (SKOR TABLOSU) */
+.top-center { 
+    top: 10px; left: 50%; transform: translateX(-50%); 
+    display: flex; gap: 20px; align-items: center; 
+    background: rgba(0,0,0,0.8);
 }
 
-.hud-item {
-  text-align: center;
+.hud-item { text-align: center; min-width: 60px; }
+.hud-label { font-size: 9px; color: #00ffcc; font-weight: bold; display: block; margin-bottom: 0;}
+.hud-value { font-size: 22px; font-weight: bold; font-family: monospace; text-shadow: none; } 
+
+/* SAĞ ÜST */
+.top-right { top: 10px; right: 10px; display: flex; gap: 5px; }
+.cam-btn { 
+    background: rgba(34, 34, 34, 0.9); 
+    color: #00ffcc; border: 1px solid #00ffcc; 
+    padding: 5px 10px; font-size: 10px; 
+    cursor: pointer; font-weight: bold;
 }
+.cam-btn:hover { background: #00ffcc; color: black; }
 
-.hud-label {
-  display: block;
-  font-size: 10px;
-  color: #888;
-  letter-spacing: 1px;
+/* ALT PANEL */
+.bottom-center { 
+    bottom: 15px; left: 50%; transform: translateX(-50%); 
+    display: flex; flex-direction: column; align-items: center;
+    border-bottom: 3px solid red;
+    padding-bottom: 5px;
 }
+/* Grafik boyutunu HTML'den de küçülteceğiz */
+#status-text { font-size: 14px; margin-top: 5px; font-weight: bold; text-transform: uppercase; color: rgb(250, 250, 0);} 
 
-.hud-value {
-  font-size: 24px;
-  font-weight: bold;
-  color: #fff;
-  font-family: 'Courier New', monospace;
-}
-
-#timer-display { color: #ff0000; } /* Süre kırmızı olsun */
-#score-display { color: #00ff00; } /* Skor yeşil olsun */
-
-/* Oyun Sonu Ekranı (Modal) */
+/* OYUN SONU */
 .hidden { display: none !important; }
+#game-over-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; justify-content: center; align-items: center; }
+.modal-content { border: 2px solid red; padding: 30px; text-align: center; background: black; color: white; border-radius: 10px;}
+.restart-btn { padding: 8px 20px; background: red; color: white; border: none; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px;}
 
-#game-over-modal {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 100; /* En üstte */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* --- COMBO EFEKTİ --- */
+
+/* Grafiğin üzerindeki yazı */
+#combo-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Tam ortala */
+    
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 40px; /* Kocaman olsun */
+    font-weight: 900;
+    font-style: italic;
+    
+    color: #fff700; /* Altın Sarısı */
+    text-shadow: 
+        0 0 10px #ffaa00, 
+        0 0 20px #ff0000, 
+        2px 2px 0px #000; /* Neon Parlama ve Gölge */
+    
+    z-index: 20; /* Grafiğin üstünde kalsın */
+    pointer-events: none; /* Tıklamayı engellemesin */
+    white-space: nowrap;
 }
 
-.modal-content {
-  background: #111;
-  border: 4px solid #ff0000;
-  padding: 40px;
-  text-align: center;
-  color: white;
-  font-family: 'Rajdhani', sans-serif;
-  box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+/* Animasyon Sınıfı (JS ile ekleyip çıkaracağız) */
+.combo-anim {
+    animation: popUp 0.8s ease-out forwards;
 }
 
-.modal-content h1 { margin: 0 0 20px 0; font-size: 40px; }
-.modal-content p { font-size: 24px; margin-bottom: 30px; }
-
-.restart-btn {
-  background: #ff0000;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 18px;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
+/* Animasyonun kendisi: Büyü -> Salla -> Kaybol */
+@keyframes popUp {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2) rotate(-10deg);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.5) rotate(5deg);
+    }
+    40% {
+        transform: translate(-50%, -50%) scale(1.0) rotate(-5deg);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
+    }
+    100% {
+        opacity: 0; /* Yavaşça kaybol */
+        transform: translate(-50%, -50%) scale(1.2);
+    }
 }
-.restart-btn:hover { background: #ff4444; }
+
+/* KÖTÜ DURUM YAZISI (KIRMIZI) */
+.danger-text {
+    color: #ff0000 !important; /* Kırmızı */
+    text-shadow: 0 0 20px #800000, 2px 2px 0px #000 !important; /* Koyu Kırmızı Gölge */
+}
