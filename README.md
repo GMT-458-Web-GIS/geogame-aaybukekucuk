@@ -71,7 +71,6 @@ The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readabi
 * **Camera Controls:** Allows switching between "Drone View" and "Street View".
 
 ### Screenshot (Layout Sketch)
-*(This screenshot fulfills the "drawings or sketches" requirement)*
 
 ![Game Layout Screenshot](assets/screenshot.png)
 
@@ -79,9 +78,7 @@ The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readabi
 
 ## 6. Gameplay Promo Video
 
-(Aşağıdaki video, GitHub'a yüklenmiştir ve doğrudan README içinde oynatılabilir.)
-
-![QuarantineRush Gameplay Demo](assets/demo.mp4)
+![QuarantineRush Gameplay Demo](assets/demo.mp4.mp4)
 
 ---
 
