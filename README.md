@@ -73,14 +73,3 @@ The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readabi
 ### Screenshot (Layout Sketch)
 
 ![Game Layout Screenshot](assets/screenshot.png)
-
----
-
-## 6. Gameplay Promo Video
-
-![QuarantineRush Gameplay Demo](assets/quarantinerush.mp4)
-
----
-
-## 7. Project Management (Git Usage)
-Regular commits were made to the repository to track design and implementation phases, fulfilling the "Regular use of Git" requirement.
