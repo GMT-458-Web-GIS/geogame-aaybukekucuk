@@ -78,7 +78,7 @@ The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readabi
 
 ## 6. Gameplay Promo Video
 
-![QuarantineRush Gameplay Demo](assets/demo.mp4.mp4)
+![QuarantineRush Gameplay Demo](assets/quarantinerush.mp4)
 
 ---
 
