@@ -1,9 +1,7 @@
-# ☣️ QuarantineRush: GMT458 Advanced GeoGame Project
+# ☣️ QuarantineRush: GMT458 - GeoGame Project
 
 **Course:** GMT458 - Web GIS  
-**Author:** [Senin Adın/Numaran]
-
-**Live Demo (GitHub Pages):** [**https://GMT-458-Web-GIS.github.io/geogame-aaybukekucuk/**](https://GMT-458-Web-GIS.github.io/geogame-aaybukekucuk/)
+**Author:** Aybüke Küçük
 
 ---
 
@@ -75,19 +73,15 @@ The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readabi
 ### Screenshot (Layout Sketch)
 *(This screenshot fulfills the "drawings or sketches" requirement)*
 
-![Game Layout Screenshot]([BURAYA OYUNUN EKRAN GÖRÜNTÜSÜNÜ EKLE])
+![Game Layout Screenshot](assets/screenshot.png)
 
 ---
 
 ## 6. Gameplay Promo Video
 
-(Aşağıdaki resme tıklayarak tanıtım videosunu izleyebilirsiniz.)
+(Aşağıdaki video, GitHub'a yüklenmiştir ve doğrudan README içinde oynatılabilir.)
 
-<p align="center">
-  <a href="https://youtu.be/Dzlzh6Tgex0" title="QuarantineRush Gameplay Video">
-    <img src="https://img.youtube.com/vi/Dzlzh6Tgex0/hqdefault.jpg" alt="QuarantineRush Gameplay Video" width="600" />
-  </a>
-</p>
+![QuarantineRush Gameplay Demo](assets/demo.mp4)
 
 ---
 
