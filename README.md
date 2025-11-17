@@ -13,8 +13,6 @@ The game is built on a photorealistic 3D model of New York City. The player acts
 
 ## 2. Design of the GeoGame (Answers to Assignment Questions)
 
-This section directly answers the questions specified in the assignment objectives.
-
 ### ▪️ How the game will progress? (Difficulty & Progression)
 
 The game's progression is based on a dynamic **Level and Score System**:
