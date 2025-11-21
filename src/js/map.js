@@ -22,7 +22,7 @@ async function loadRealCity() {
 loadRealCity();
 
 // --- DEĞİŞKENLER ---
-let gameActive = false;
+let gameActive = false; // Oyunun başlayıp başlamadığını kontrol eder
 let score = 0;
 let timeLeft = 60; 
 let timerInterval;
@@ -42,7 +42,7 @@ window.flyToDrone = function() {
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(-73.9857, 40.7484, 2000), 
         orientation: { heading: 0.0, pitch: Cesium.Math.toRadians(-60.0), roll: 0.0 },
-        duration: 2
+        duration: 3
     });
 };
 window.flyToStreet = function() {
@@ -53,6 +53,9 @@ window.flyToStreet = function() {
     });
 };
 viewer.scene.globe.enableLighting = true;
+
+// OYUN BAŞLAR BAŞLAMAZ UÇ
+flyToDrone(); 
 
 // --- CHART.JS ---
 function initChart() {
@@ -78,21 +81,24 @@ function initChart() {
     });
 }
 
-// --- OYUNU BAŞLAT ---
-function initGame() {
-    console.log("Oyun Başlatılıyor...");
+// --- 1. AŞAMA: ÖN YÜKLEME (Oyun henüz başlamadı, sadece görsel) ---
+function preloadGame() {
+    console.log("Sistem Hazırlanıyor... Oyuncu bekleniyor.");
     initChart(); 
     
     if(!window.GameData) { alert("Veri dosyası eksik!"); return; }
 
     const taxis = window.GameData.generateTaxis(totalTaxis);
 
+    // Taksileri oluştur ama henüz virüs yayma
     taxis.forEach(taxi => {
-        const taxiColor = taxi.isInfected ? Cesium.Color.RED : Cesium.Color.YELLOW;
+        // Başlangıçta hepsi SARI (Sağlıklı) görünsün veya simülasyon verisindeki gibi kalsın.
+        // Ama oyun başlamadığı için puanlama yok.
+        const taxiColor = Cesium.Color.YELLOW; 
+        
         const entity = viewer.entities.add({
             id: 'taxi_' + taxi.id,
             position: Cesium.Cartesian3.fromDegrees(taxi.position[0], taxi.position[1], 300), 
-            
             box: {
                 dimensions: new Cesium.Cartesian3(40.0, 20.0, 20.0), 
                 material: taxiColor, 
@@ -108,15 +114,26 @@ function initGame() {
     });
 
     viewer.zoomTo(viewer.entities);
-    viewer.clock.onTick.addEventListener(animateTaxis);
-    
+    viewer.clock.onTick.addEventListener(animateTaxis); // Taksiler hareket etsin (Atmosfer için)
+}
+
+// --- 2. AŞAMA: OYUNU BAŞLATMA (Butona basınca çalışır) ---
+window.startGame = function() {
+    // Giriş ekranını gizle
+    const startScreen = document.getElementById('start-screen');
+    startScreen.style.opacity = '0';
+    setTimeout(() => startScreen.style.display = 'none', 500);
+
+    // Oyunu Aktif Et
     gameActive = true;
     startTimer();
-    spawnInfection(3); 
     
-    // Level 1 Hedefi: 1000 Puan
-    setStatus("LEVEL 1 START! (Target: 1000 pts)", "cyan");
-}
+    // İLK VİRÜSÜ SAL!
+    spawnInfection(8); 
+    
+    setStatus("PROTOCOL INITIATED! LEVEL 1 START!", "cyan");
+    console.log("OYUN BAŞLADI!");
+};
 
 // --- ZAMANLAYICI ---
 function startTimer() {
@@ -135,8 +152,8 @@ function startTimer() {
             healRandomTaxis(10); 
         }
         
-        // Virüs çıkma şansı: Maksimum %40'ta kalacak.
-        let spawnChance = Math.min(0.80, 0.05 + (currentLevel * 0.05));
+        // Virüs yayılma hızı
+        let spawnChance = Math.min(0.6, 0.40 + (currentLevel * 0.05));
         
         if (Math.random() < spawnChance) {
             spawnInfection(1); 
@@ -160,18 +177,13 @@ function loseLife(reason) {
     if(lEl) lEl.innerText = icons;
     
     setStatus(`⚠️ LIFE LOST! ${reason || ""}`, "red");
-    triggerComboVisual("🦠LIFE LOST!", true);
+    triggerComboVisual("💔 LIFE LOST!", true);
     
     if (lives <= 0) endGame("INFECTION WON!");
 }
 
-// --- YENİ LEVEL SİSTEMİ (Üçgensel Sayı Kuralı ile İstenen Artış Farkı) ---
+// --- LEVEL SİSTEMİ ---
 function getTargetScore(level) {
-    // Toplam Skor Hedefi = (N * (N + 1) / 2) * 1000
-    // Level 1 Hedef: 1000
-    // Level 2 Hedef: 3000 (Fark +2000)
-    // Level 3 Hedef: 6000 (Fark +3000)
-    // Level 4 Hedef: 10000 (Fark +4000)
     if (level === 1) return 1000;
     return (level * (level + 1) / 2) * 1000;
 }
@@ -186,14 +198,10 @@ function checkLevelUp() {
 function levelUp(lvl) {
     currentLevel = lvl;
     document.getElementById('level-display').innerText = currentLevel;
-    
-    timeLeft += 25; // Ödül süre
-    let nextTarget = getTargetScore(lvl + 1); // Bir sonraki levelin hedef skorunu hesapla
-    
-    setStatus(`😷 LEVEL UP! NEXT TARGET: ${nextTarget} PTS`, "cyan");
-    triggerComboVisual(`😷 LEVEL ${lvl}`, false);
-    
-    // Zorluğu artır (Virüs çıkma miktarını yavaşça artırır)
+    timeLeft += 25; 
+    let nextTarget = getTargetScore(lvl + 1); 
+    setStatus(`LEVEL UP! NEXT TARGET: ${nextTarget} PTS`, "cyan");
+    triggerComboVisual(`LEVEL ${lvl}`, false);
     spawnInfection(3 + Math.min(lvl, 10)); 
 }
 
@@ -221,17 +229,15 @@ function endGame(reason) {
     document.getElementById('final-score').innerHTML = `${score}<br><small>${reason}</small>`;
 }
 
-// --- HIZ LİMİTİ ---
 function animateTaxis() {
-    if (!gameActive) return;
+    // Not: gameActive kontrolünü kaldırdım ki menüdeyken arkada taksiler hareket etsin (Görsellik için)
+    
     taxiEntities.forEach(item => {
+        let speed = item.data.speed * Math.min(8.0, (4.0 + currentLevel * 0.5));
         
-        // HIZ LİMİTİ: Max 8.0'da kalır. Level arttıkça yavaşça artar.
-        let speedMultiplier = Math.min(8.0, 4.0 + (currentLevel * 0.5));
-        
-        if (item.data.isInfected) speedMultiplier *= 1.2; // Virüslüler %20 daha hızlı
+        if (item.data.isInfected) speed *= 1.2; 
 
-        item.progress += item.data.speed * speedMultiplier;
+        item.progress += item.data.speed * speed;
 
         if (item.progress >= 1) {
             item.progress = 0;
@@ -249,10 +255,11 @@ function animateTaxis() {
     });
 }
 
-// --- ETKİLEŞİM & PUANLAMA (DENGELENDİ) ---
+// --- ETKİLEŞİM ---
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function(movement) {
-    if (!gameActive) return;
+    if (!gameActive) return; // Oyun başlamadıysa tıklama çalışmaz!
+    
     const cartesian = viewer.scene.pickPosition(movement.position);
     if (cartesian) {
         const c = Cesium.Cartographic.fromCartesian(cartesian);
@@ -262,9 +269,7 @@ handler.setInputAction(function(movement) {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 function createQuarantineVisual(pos) {
-    // Yakalama Çapı: Başlangıçta 700m, her levelde 50m küçülür (Hassasiyet Artışı)
     let visualRadius = Math.max(300.0, 700.0 - (currentLevel * 50.0));
-    
     const q = viewer.entities.add({
         position: pos,
         cylinder: { length: 1500.0, topRadius: visualRadius, bottomRadius: visualRadius, material: Cesium.Color.LIME.withAlpha(0.4), outline: true }
@@ -297,23 +302,17 @@ function checkQuarantineZone(lng, lat) {
 
     // --- SONUÇLAR ---
     if (caughtInfected > 0) {
-        // BAŞARILI
         mistakeCount = 0; 
-        
         const now = Date.now();
         if (now - lastCatchTime < 2500) { comboCounter++; } 
         else { comboCounter = 1; }
         lastCatchTime = now;
 
-        let pts = caughtInfected * 100; // Yakalanan taksi başına 100 temel puan
-        
-        // --- PUANLAMA DÜZELTMESİ: COMBO ETKİSİ AZALTILDI ---
+        let pts = caughtInfected * 100; 
+
         if (comboCounter >= 2) {
-            // Eski: pts *= comboCounter (Çok hızlı artış)
-            // Yeni: Combo sadece %25'lik bir katman ekler (Dengeli Artış)
             const comboMultiplier = (1 + (comboCounter - 1) * 0.25);
             pts = Math.floor(pts * comboMultiplier);
-
             triggerComboVisual(`🔥 COMBO x${comboCounter}!`);
             setStatus("CHAIN REACTION!", "orange");
         } else {
@@ -323,12 +322,9 @@ function checkQuarantineZone(lng, lat) {
 
         score += pts;
         document.getElementById('score-display').innerText = Math.floor(score);
-        
         checkLevelUp();
 
     } else if (caughtHealthy > 0) {
-        // SAĞLIKLI VURMA HATASI
-        // ... (Puan kaybı aynı kalır)
         mistakeCount++;
         score -= 50; 
         if(score<0) score=0;
@@ -336,18 +332,16 @@ function checkQuarantineZone(lng, lat) {
         
         if (mistakeCount >= 2) {
             loseLife("TOO MANY MISTAKES!");
-            triggerComboVisual("🦠 LIFE LOST!", true); 
+            triggerComboVisual("💔 LIFE LOST!", true);
             mistakeCount = 0;
         } else {
             setStatus(`⚠️ WRONG TARGET! (${mistakeCount}/2)`, "red");
         }
     } else {
-        // BOŞ TIKLAMA HATASI
-        // ... (Can kaybı aynı kalır)
         mistakeCount++;
         if (mistakeCount >= 2) {
             loseLife("MISSED TOO MANY!");
-            triggerComboVisual("🦠 LIFE LOST!", true);
+            triggerComboVisual("💔 LIFE LOST!", true);
             mistakeCount = 0;
         } else {
             setStatus(`⚠️ MISSED! (${mistakeCount}/2)`, "red");
@@ -380,4 +374,5 @@ function setStatus(text, color) {
     }
 }
 
-setTimeout(initGame, 4000);
+// 4 Saniye sonra ÖN YÜKLEMEYİ başlat (Menu Açılır)
+setTimeout(preloadGame, 4000);
