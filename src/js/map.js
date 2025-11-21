@@ -9,10 +9,9 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
     animation: false, navigationHelpButton: false, fullscreenButton: false
 });
 
-// Binaların arkasında kalsa bile göster
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// 3. ŞEHİR YÜKLE (Ama kamerayı hemen oraya götürme!)
+// 3. ŞEHİR YÜKLE
 async function loadRealCity() {
     try {
         const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(2275207);
@@ -54,6 +53,12 @@ window.flyToStreet = function() {
 };
 viewer.scene.globe.enableLighting = true;
 
+// Başlangıç Kamerası (Uzay)
+viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 20000000.0),
+    orientation: { heading: 0.0, pitch: Cesium.Math.toRadians(-90.0), roll: 0.0 }
+});
+
 // --- CHART.JS ---
 function initChart() {
     const canvas = document.getElementById('infectionChart');
@@ -78,22 +83,17 @@ function initChart() {
     });
 }
 
-// --- AŞAMA 1: ÖN YÜKLEME (UZAY MODU) ---
+// --- 1. HAZIRLIK ---
 function preloadGame() {
-    console.log("Sistem Hazırlanıyor... Oyuncu bekleniyor.");
+    console.log("Sistem Hazırlanıyor...");
     initChart(); 
     
-    // Kamerayı Uzaya Sabitle (Amerika Kıtası Üzeri)
-    viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 20000000.0) // 20.000 km yükseklik
-    });
-
     if(!window.GameData) { alert("Veri dosyası eksik!"); return; }
 
     const taxis = window.GameData.generateTaxis(totalTaxis);
 
     taxis.forEach(taxi => {
-        const taxiColor = Cesium.Color.YELLOW; // Başlangıçta hepsi sarı görünsün
+        const taxiColor = Cesium.Color.YELLOW; 
         const entity = viewer.entities.add({
             id: 'taxi_' + taxi.id,
             position: Cesium.Cartesian3.fromDegrees(taxi.position[0], taxi.position[1], 300), 
@@ -111,28 +111,24 @@ function preloadGame() {
         taxiEntities.push({ data: taxi, entity: entity, progress: 0 });
     });
 
-    // Taksiler arkada hareket etsin ama oyun başlamasın
     viewer.clock.onTick.addEventListener(animateTaxis); 
 }
 
-// --- AŞAMA 2: OYUNU BAŞLATMA (Butona Basınca) ---
+// --- 2. BAŞLAT ---
 window.startGame = function() {
-    // 1. Giriş Ekranını Kaldır
     const startScreen = document.getElementById('start-screen');
     startScreen.style.opacity = '0';
     setTimeout(() => startScreen.style.display = 'none', 500);
 
-    // 2. Sinematik Uçuşu Başlat! (Uzaydan Manhattan'a)
     flyToDrone();
 
-    // 3. Oyun Mantığını Başlat (Uçuş bitince başlasın diye 3sn gecikme)
     setTimeout(() => {
         gameActive = true;
         startTimer();
-        spawnInfection(8); // Hızlı başlangıç
+        spawnInfection(8); 
         setStatus("LEVEL 1 START! (Target: 1000 pts)", "cyan");
         console.log("OYUN BAŞLADI!");
-    }, 3000); // 3000ms = Uçuş süresi
+    }, 3000);
 };
 
 // --- ZAMANLAYICI ---
@@ -196,13 +192,10 @@ function checkLevelUp() {
 function levelUp(lvl) {
     currentLevel = lvl;
     document.getElementById('level-display').innerText = currentLevel;
-    
     timeLeft += 25; 
     let nextTarget = getTargetScore(lvl + 1); 
-    
     setStatus(`LEVEL UP! NEXT TARGET: ${nextTarget} PTS`, "cyan");
     triggerComboVisual(`LEVEL ${lvl}`, false);
-    
     spawnInfection(3 + Math.min(lvl, 10)); 
 }
 
@@ -230,13 +223,19 @@ function endGame(reason) {
     document.getElementById('final-score').innerHTML = `${score}<br><small>${reason}</small>`;
 }
 
+// --- HAREKET MANTIĞI (DÜZELTİLDİ) ---
 function animateTaxis() {
-    // Not: gameActive kontrolünü kaldırdım ki menüdeyken arkada hareket etsinler
     taxiEntities.forEach(item => {
-        let speed = item.data.speed * Math.min(8.0, (4.0 + currentLevel * 0.5));
-        if (item.data.isInfected) speed *= 1.2; 
+        
+        // Hız Çarpanını Artırdık (Min 10x - Max 25x)
+        let speedMultiplier = Math.min(20.0, 10.0 + (currentLevel * 2.0));
+        
+        // Enfekte olanlar %50 daha hızlı
+        if (item.data.isInfected) speedMultiplier *= 1.0; 
 
-        item.progress += item.data.speed * speed;
+        // ÖNEMLİ DÜZELTME: Artık hızı kendisiyle çarpmıyoruz.
+        // Doğrudan çarpan ile çarpıyoruz.
+        item.progress += item.data.speed * speedMultiplier;
 
         if (item.progress >= 1) {
             item.progress = 0;
@@ -248,6 +247,7 @@ function animateTaxis() {
         
         item.entity.position = Cesium.Cartesian3.fromDegrees(lng, lat, 300); 
 
+        // Rengi güncelle
         const finalColor = item.data.isInfected ? Cesium.Color.RED : Cesium.Color.YELLOW;
         item.entity.box.material = finalColor;
         item.entity.point.color = finalColor;
@@ -257,7 +257,7 @@ function animateTaxis() {
 // --- ETKİLEŞİM ---
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function(movement) {
-    if (!gameActive) return; // Oyun başlamadan tıklama çalışmaz
+    if (!gameActive) return;
     const cartesian = viewer.scene.pickPosition(movement.position);
     if (cartesian) {
         const c = Cesium.Cartographic.fromCartesian(cartesian);
@@ -278,7 +278,6 @@ function createQuarantineVisual(pos) {
 function checkQuarantineZone(lng, lat) {
     const radius = Math.max(0.2, 0.6 - (currentLevel * 0.05)); 
     const clickPoint = turf.point([lng, lat]);
-    
     let caughtInfected = 0;
     let caughtHealthy = 0;
 
@@ -323,10 +322,8 @@ function checkQuarantineZone(lng, lat) {
 
     } else if (caughtHealthy > 0) {
         mistakeCount++;
-        score -= 50; 
-        if(score<0) score=0;
+        score -= 50; if(score<0) score=0;
         document.getElementById('score-display').innerText = score;
-        
         if (mistakeCount >= 2) {
             loseLife("TOO MANY MISTAKES!");
             triggerComboVisual("💔 LIFE LOST!", true);
@@ -349,17 +346,11 @@ function checkQuarantineZone(lng, lat) {
 function triggerComboVisual(text, isDanger = false) {
     const el = document.getElementById('combo-popup');
     if(!el) return;
-
     el.innerText = text;
-    el.classList.remove('hidden');
-    el.classList.remove('combo-anim');
-    el.classList.remove('danger-text'); 
-    
+    el.classList.remove('hidden'); el.classList.remove('combo-anim'); el.classList.remove('danger-text'); 
     if (isDanger) el.classList.add('danger-text'); 
-
     void el.offsetWidth; 
     el.classList.add('combo-anim');
-
     setTimeout(() => { el.classList.add('hidden'); }, 1000);
 }
 
@@ -372,4 +363,4 @@ function setStatus(text, color) {
 }
 
 // SAYFA YÜKLENİNCE ÖN YÜKLEMEYİ BAŞLAT
-setTimeout(preloadGame, 4000);
+setTimeout(preloadGame, 1000);

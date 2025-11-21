@@ -9,7 +9,7 @@
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
     <div id="ui-layer">
         <div class="panel top-left">
             <h1 class="game-title">QUARANTINE<span class="danger">RUSH</span></h1>
-            <div class="sub-title">📍 MANHATTAN </div>
+            <div class="sub-title">📍 MANHATTAN (BIO-SECURITY LAYER)</div>
         </div>
         
         <div class="panel top-center">
@@ -32,14 +32,13 @@
             <button onclick="flyToDrone()" class="cam-btn">🛰️ DRONE</button>
         </div>
 
-    <div class="panel bottom-center">
-            <div style="width: 250px; height: 80px; position: relative;"> <canvas id="infectionChart"></canvas>
-                
-                <div id="combo-popup" class="hidden">COMBO x3!</div>
+        <div class="panel bottom-center">
+            <div style="width: 300px; height: 100px; position: relative;"> 
+                <canvas id="infectionChart"></canvas>
+                <div id="combo-popup" class="hidden">COMBO!</div>
             </div>
-            
             <div class="stat-box">
-                <span id="status-text" class="blink">SYSTEM READY...</span>
+                <span id="status-text" class="blink">AWAITING INPUT...</span>
             </div>
         </div>
     </div>
@@ -52,27 +51,26 @@
         </div>
     </div>
 
-    <div id="cesiumContainer"></div>
-
-    <script src="src/js/sim_data.js"></script>
-    <script src="src/js/map.js"></script>
-
     <div id="start-screen">
         <div class="start-content">
-            <h1 class="main-title">QUARANTINE<span class="danger">RUSH</span></h1>
+            <h1 class="main-title" style="font-size: 50px;">QUARANTINE<span class="danger">RUSH</span></h1>
             <div class="mission-brief">
-                <h3>⚠️ MISSION BRIEFING ⚠️</h3>
-                <p>New York is under viral attack. You are the Crisis Manager.</p>
+                <h3>⚠️ MISSION BRIEFING</h3>
+                <p>New York is under viral attack. Command the satellite defense system.</p>
                 <ul>
                     <li>🎯 <strong>GOAL:</strong> Quarantine infected (RED) taxis.</li>
-                    <li>🛡️ <strong>PROTECT:</strong> Do NOT quarantine healthy (YELLOW) taxis.</li>
-                    <li>❤️ <strong>LIVES:</strong> You have 3 immunity lives. 2 Mistakes = 1 Life Lost.</li>
-                    <li>📈 <strong>LEVELS:</strong> Infection spreads faster as you progress.</li>
+                    <li>🛡️ <strong>PROTECT:</strong> Do NOT target healthy (YELLOW) taxis.</li>
+                    <li>❤️ <strong>LIVES:</strong> 2 Mistakes = 1 Life Lost.</li>
                 </ul>
             </div>
             <button onclick="startGame()" class="start-btn">INITIATE PROTOCOL</button>
         </div>
     </div>
+
+    <div id="cesiumContainer"></div>
+
+    <script src="src/js/sim_data.js"></script>
+    <script src="src/js/map.js"></script>
 
 </body>
 </html>

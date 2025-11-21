@@ -117,85 +117,123 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     text-shadow: 0 0 20px #800000, 2px 2px 0px #000 !important; /* Koyu Kırmızı Gölge */
 }
 
-/* ... (Üst kısımlar aynı kalsın) ... */
+/* Temel Ayarlar */
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Rajdhani', sans-serif; }
+#cesiumContainer { width: 100%; height: 100%; }
+.cesium-viewer-bottom { display: none; }
 
-/* --- GİRİŞ EKRANI (GÜNCELLENMİŞ - MİNİMAL) --- */
+/* --- GİRİŞ EKRANI (START SCREEN) - GÜNCELLENDİ --- */
 #start-screen {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Daha şeffaf arka plan */
-    z-index: 2000; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(4px);
-    transition: opacity 0.5s ease;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+    z-index: 2000; display: flex; justify-content: center; align-items: center;
+    backdrop-filter: blur(8px); transition: opacity 0.8s ease;
 }
 
 .start-content {
-    text-align: center;
-    border: 2px solid #00ffcc; /* İnce çerçeve */
-    padding: 30px; /* Boşluk azaldı */
-    background: rgba(0, 15, 15, 0.95);
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
-    max-width: 400px; /* Genişlik sınırlandı */
+    text-align: center; 
+    border: 4px solid #00ffcc; /* Çerçeve kalınlaştı */
+    padding: 50px; 
+    background: rgba(0, 15, 20, 0.95); 
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(0, 255, 204, 0.3); 
+    width: 600px; /* Genişlik arttı */
+    max-width: 90%;
 }
 
+/* BAŞLIK RENGİ DÜZELTİLDİ */
 .main-title {
-    font-size: 36px; /* 60px'den 36px'e düştü */
-    margin-bottom: 10px;
-    color: white;
-    text-shadow: 0 0 10px #00ffcc;
+    font-size: 50px; /* BÜYÜTÜLDÜ */
+    margin-bottom: 20px;
+    color: #ffffff !important; /* Zorla BEYAZ yap */
+    text-shadow: 0 0 20px #00ffcc;
     font-family: 'Rajdhani', sans-serif;
-    font-weight: 800;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
-.mission-brief {
-    text-align: left;
-    margin-bottom: 20px;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
-    padding: 15px 0;
+.mission-brief { 
+    text-align: left; 
+    margin: 30px 0; 
+    border-top: 2px solid #444; 
+    border-bottom: 2px solid #444; 
+    padding: 20px 0; 
 }
 
 .mission-brief h3 { 
     color: #ffcc00; 
-    margin-bottom: 5px; 
-    font-size: 16px; 
+    margin: 0 0 15px 0; 
+    font-size: 24px; /* BÜYÜTÜLDÜ */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.mission-brief ul { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0;
+.mission-brief p {
+    font-size: 18px;
+    color: #ddd;
+    margin-bottom: 15px;
 }
+
+.mission-brief ul { padding-left: 20px; margin: 0; }
 
 .mission-brief li { 
-    font-size: 13px; /* Yazılar küçüldü */
-    color: #ddd; 
-    margin-bottom: 5px; 
-    font-family: 'Rajdhani', sans-serif; 
+    color: #fff; 
+    margin-bottom: 10px; 
+    font-size: 18px; /* LİSTE YAZILARI BÜYÜTÜLDÜ */
+    font-weight: 500;
+    line-height: 1.4;
 }
 
 .start-btn {
-    background: rgba(0, 255, 204, 0.1);
-    color: #00ffcc;
-    border: 1px solid #00ffcc;
-    padding: 10px 30px; /* Buton küçüldü */
-    font-size: 18px;
-    font-weight: bold;
+    background: rgba(0, 255, 204, 0.15); 
+    color: #00ffcc; 
+    border: 3px solid #00ffcc;
+    padding: 20px 60px; /* BUTON BÜYÜTÜLDÜ */
+    font-size: 28px; 
+    font-weight: 900; 
     cursor: pointer;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Rajdhani'; 
+    letter-spacing: 3px; 
+    transition: 0.3s;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
 }
+.start-btn:hover { background: #00ffcc; color: black; box-shadow: 0 0 50px #00ffcc; }
 
-.start-btn:hover {
-    background: #00ffcc;
-    color: black;
-    box-shadow: 0 0 20px #00ffcc;
+/* OYUN İÇİ PANELLER (Eski halini koruduk) */
+.panel {
+    position: absolute; background: rgba(0, 0, 0, 0.85); border: 2px solid #00ffcc;
+    padding: 10px 15px; color: white; border-radius: 8px; z-index: 10;
 }
+.top-left { top: 20px; left: 20px; border-left: 5px solid red; }
+.game-title { margin: 0; font-size: 24px; letter-spacing: 2px; } 
+.danger { color: red !important; text-shadow: 0 0 10px red; }
+.sub-title { font-size: 12px; color: #aaa; font-weight: bold; }
+
+.top-center { top: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 25px; }
+.hud-item { text-align: center; }
+.hud-label { font-size: 10px; color: #00ffcc; display: block; }
+.hud-value { font-size: 24px; font-weight: bold; font-family: monospace; } 
+
+.top-right { top: 20px; right: 20px; display: flex; gap: 10px; }
+.cam-btn { background: #222; color: #00ffcc; border: 1px solid #00ffcc; padding: 8px 15px; cursor: pointer; font-weight: bold;}
+.cam-btn:hover { background: #00ffcc; color: black; }
+
+.bottom-center { bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; border-bottom: 5px solid red; }
+#status-text { font-size: 18px; margin-top: 10px; font-weight: bold; color: yellow;} 
+
+/* COMBO & OYUN SONU */
+#combo-popup {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 40px; font-weight: 900; font-style: italic; color: #fff700;
+    text-shadow: 0 0 20px #ffaa00; z-index: 20; pointer-events: none;
+}
+.danger-text { color: red !important; text-shadow: 0 0 20px darkred; }
+.combo-anim { animation: popUp 0.8s ease-out forwards; }
+@keyframes popUp { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } 100% { opacity: 0; } }
+
+.hidden { display: none !important; }
+#game-over-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: flex; justify-content: center; align-items: center; }
+.modal-content { border: 4px solid red; padding: 50px; text-align: center; background: black; color: white; }
+.restart-btn { padding: 15px 30px; background: red; color: white; border: none; font-size: 20px; cursor: pointer; margin-top: 20px;}

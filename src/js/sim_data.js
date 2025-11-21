@@ -44,7 +44,11 @@ function generateTaxis(count = 100) {
             end: LOCATIONS[endKey],
             position: [...LOCATIONS[startKey]],
             isInfected: false,
-            speed: 0.0001 + (Math.random() * 0.0001) 
+            
+            // --- HIZ AYARI (GÜNCELLENDİ) ---
+            // Eskiden: 0.0001 (Çok yavaştı)
+            // Şimdi: 0.001 (10 Kat daha hızlı!)
+            speed: 0.0000001 + (Math.random() * 0.0005) 
         });
     }
     
