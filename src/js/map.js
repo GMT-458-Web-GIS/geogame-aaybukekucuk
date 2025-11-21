@@ -11,6 +11,63 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
 
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
+// --- SES SİSTEMİ (MUTE ÖZELLİKLİ) ---
+let isMuted = false; // Varsayılan: Ses Açık
+
+const sounds = {
+    start: new Audio('assets/sound/start.mp3'),
+    alert: new Audio('assets/sound/alert.mp3'),
+    gameover: new Audio('assets/sound/gameover.mp3'),
+    soundtrack: new Audio('assets/sound/soundtrack.mp3')
+};
+
+// Arka plan müziği ayarı
+sounds.soundtrack.loop = true;
+sounds.soundtrack.volume = 0.4; 
+// Diğer sesleri ön yükle
+Object.values(sounds).forEach(s => s.load());
+
+// MUTE BUTONU FONKSİYONU
+window.toggleMute = function() {
+    isMuted = !isMuted;
+    const btn = document.getElementById('mute-btn');
+    
+    if (isMuted) {
+        // SESSİZE AL
+        btn.innerHTML = "🔇 OFF";
+        btn.style.borderColor = "red";
+        btn.style.color = "red";
+        sounds.soundtrack.pause(); // Müziği durdur
+    } else {
+        // SESİ AÇ
+        btn.innerHTML = "🔊 ON";
+        btn.style.borderColor = "#00ffcc";
+        btn.style.color = "#00ffcc";
+        // Eğer oyun devam ediyorsa müziği başlat
+        if (gameActive) sounds.soundtrack.play().catch(e => console.log(e));
+    }
+};
+
+function playSound(type) {
+    if (isMuted) return; // Ses kapalıysa çalma
+
+    const sound = sounds[type];
+    if (sound) {
+        if (type !== 'soundtrack') {
+            sound.currentTime = 0;
+        }
+        sound.play().catch(e => console.log("Ses hatası:", e));
+    }
+}
+
+function stopSound(type) {
+    const sound = sounds[type];
+    if (sound) {
+        sound.pause();
+        sound.currentTime = 0; 
+    }
+}
+
 // 3. ŞEHİR YÜKLE
 async function loadRealCity() {
     try {
@@ -114,8 +171,14 @@ function preloadGame() {
     viewer.clock.onTick.addEventListener(animateTaxis); 
 }
 
-// --- 2. BAŞLAT ---
+// --- 2. BAŞLAT (GÜNCELLENDİ) ---
 window.startGame = function() {
+    // Giriş sesini çal
+    playSound('start');
+    
+    // Arka plan müziğini başlat
+    playSound('soundtrack');
+
     const startScreen = document.getElementById('start-screen');
     startScreen.style.opacity = '0';
     setTimeout(() => startScreen.style.display = 'none', 500);
@@ -166,6 +229,8 @@ function updateChart(i, h) {
 
 function loseLife(reason) {
     lives--;
+    playSound('alert'); // Uyarı sesi
+    
     let icons = ""; for(let i=0; i<lives; i++) icons += "☣️ "; 
     const lEl = document.getElementById('lives-display');
     if(lEl) lEl.innerText = icons;
@@ -220,6 +285,11 @@ function healRandomTaxis(amount) {
 
 function endGame(reason) {
     gameActive = false;
+    
+    // Müzikleri yönet
+    stopSound('soundtrack'); // Müziği kes
+    playSound('gameover');   // Bitiş sesini çal
+
     clearInterval(timerInterval);
     document.getElementById('game-over-modal').classList.remove('hidden');
     document.getElementById('game-result-title').innerText = "GAME OVER";
