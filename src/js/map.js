@@ -53,7 +53,7 @@ window.flyToStreet = function() {
 };
 viewer.scene.globe.enableLighting = true;
 
-// Başlangıç Kamerası (Uzay)
+// UZAY KAMERASI (BAŞLANGIÇ)
 viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 20000000.0),
     orientation: { heading: 0.0, pitch: Cesium.Math.toRadians(-90.0), roll: 0.0 }
@@ -192,10 +192,13 @@ function checkLevelUp() {
 function levelUp(lvl) {
     currentLevel = lvl;
     document.getElementById('level-display').innerText = currentLevel;
+    
     timeLeft += 25; 
     let nextTarget = getTargetScore(lvl + 1); 
+    
     setStatus(`LEVEL UP! NEXT TARGET: ${nextTarget} PTS`, "cyan");
     triggerComboVisual(`LEVEL ${lvl}`, false);
+    
     spawnInfection(3 + Math.min(lvl, 10)); 
 }
 
@@ -223,18 +226,20 @@ function endGame(reason) {
     document.getElementById('final-score').innerHTML = `${score}<br><small>${reason}</small>`;
 }
 
-// --- HAREKET MANTIĞI (DÜZELTİLDİ) ---
+// --- HIZ VE HAREKET MANTIĞI (DENGELENDİ) ---
 function animateTaxis() {
     taxiEntities.forEach(item => {
+        // FORMÜL: 
+        // Taban Çarpan: 2.0 (Başlangıçta makul hız)
+        // Level Başına Artış: 0.5 (Kontrollü artış)
+        // Maksimum Çarpan: 6.0 (Çok hızlı ama takip edilebilir sınır)
+        let levelMultiplier = 2.0 + (currentLevel * 0.5);
+        let speedMultiplier = Math.min(6.0, levelMultiplier);
         
-        // Hız Çarpanını Artırdık (Min 10x - Max 25x)
-        let speedMultiplier = Math.min(20.0, 10.0 + (currentLevel * 2.0));
-        
-        // Enfekte olanlar %50 daha hızlı
-        if (item.data.isInfected) speedMultiplier *= 1.0; 
+        // Virüs Avantajı: %30 daha hızlı (Heyecan yaratır)
+        if (item.data.isInfected) speedMultiplier *= 1.3; 
 
-        // ÖNEMLİ DÜZELTME: Artık hızı kendisiyle çarpmıyoruz.
-        // Doğrudan çarpan ile çarpıyoruz.
+        // Hareketi uygula
         item.progress += item.data.speed * speedMultiplier;
 
         if (item.progress >= 1) {
@@ -247,7 +252,6 @@ function animateTaxis() {
         
         item.entity.position = Cesium.Cartesian3.fromDegrees(lng, lat, 300); 
 
-        // Rengi güncelle
         const finalColor = item.data.isInfected ? Cesium.Color.RED : Cesium.Color.YELLOW;
         item.entity.box.material = finalColor;
         item.entity.point.color = finalColor;
@@ -322,7 +326,8 @@ function checkQuarantineZone(lng, lat) {
 
     } else if (caughtHealthy > 0) {
         mistakeCount++;
-        score -= 50; if(score<0) score=0;
+        score -= 50; 
+        if(score<0) score=0;
         document.getElementById('score-display').innerText = score;
         if (mistakeCount >= 2) {
             loseLife("TOO MANY MISTAKES!");

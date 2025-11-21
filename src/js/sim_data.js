@@ -1,13 +1,11 @@
 // --- src/js/sim_data.js ---
 
-// Genel Durum
 const GameState = {
     taxis: [],
     totalInfected: 0,
     gameTime: 0
 };
 
-// Manhattan Koordinatları
 const LOCATIONS = {
     TIMES_SQUARE: [-73.9851, 40.7580],
     CENTRAL_PARK_S: [-73.9730, 40.7644],
@@ -45,10 +43,11 @@ function generateTaxis(count = 100) {
             position: [...LOCATIONS[startKey]],
             isInfected: false,
             
-            // --- HIZ AYARI (GÜNCELLENDİ) ---
-            // Eskiden: 0.0001 (Çok yavaştı)
-            // Şimdi: 0.001 (10 Kat daha hızlı!)
-            speed: 0.0000001 + (Math.random() * 0.0005) 
+            // --- HIZ AYARI (GAME DESIGN FIX) ---
+            // Taban Hız: 0.00005 (Yeterince yavaş ama hareketli)
+            // Rastgelelik: Sadece %20 fark eder.
+            // Sonuç: Hepsi akıcı bir trafik gibi hareket eder.
+            speed: 0.0001 + (Math.random() * 0.0001) 
         });
     }
     
