@@ -9,20 +9,20 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
     animation: false, navigationHelpButton: false, fullscreenButton: false
 });
 
+// Binaların arkasında kalsa bile göster
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// 3. ŞEHİR YÜKLE
+// 3. ŞEHİR YÜKLE (Ama kamerayı hemen oraya götürme!)
 async function loadRealCity() {
     try {
         const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(2275207);
         viewer.scene.primitives.add(tileset);
-        flyToDrone(); 
     } catch (error) { console.log("HATA:", error); }
 }
 loadRealCity();
 
 // --- DEĞİŞKENLER ---
-let gameActive = false; // Oyunun başlayıp başlamadığını kontrol eder
+let gameActive = false;
 let score = 0;
 let timeLeft = 60; 
 let timerInterval;
@@ -54,9 +54,6 @@ window.flyToStreet = function() {
 };
 viewer.scene.globe.enableLighting = true;
 
-// OYUN BAŞLAR BAŞLAMAZ UÇ
-flyToDrone(); 
-
 // --- CHART.JS ---
 function initChart() {
     const canvas = document.getElementById('infectionChart');
@@ -81,21 +78,22 @@ function initChart() {
     });
 }
 
-// --- 1. AŞAMA: ÖN YÜKLEME (Oyun henüz başlamadı, sadece görsel) ---
+// --- AŞAMA 1: ÖN YÜKLEME (UZAY MODU) ---
 function preloadGame() {
     console.log("Sistem Hazırlanıyor... Oyuncu bekleniyor.");
     initChart(); 
     
+    // Kamerayı Uzaya Sabitle (Amerika Kıtası Üzeri)
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 20000000.0) // 20.000 km yükseklik
+    });
+
     if(!window.GameData) { alert("Veri dosyası eksik!"); return; }
 
     const taxis = window.GameData.generateTaxis(totalTaxis);
 
-    // Taksileri oluştur ama henüz virüs yayma
     taxis.forEach(taxi => {
-        // Başlangıçta hepsi SARI (Sağlıklı) görünsün veya simülasyon verisindeki gibi kalsın.
-        // Ama oyun başlamadığı için puanlama yok.
-        const taxiColor = Cesium.Color.YELLOW; 
-        
+        const taxiColor = Cesium.Color.YELLOW; // Başlangıçta hepsi sarı görünsün
         const entity = viewer.entities.add({
             id: 'taxi_' + taxi.id,
             position: Cesium.Cartesian3.fromDegrees(taxi.position[0], taxi.position[1], 300), 
@@ -113,26 +111,28 @@ function preloadGame() {
         taxiEntities.push({ data: taxi, entity: entity, progress: 0 });
     });
 
-    viewer.zoomTo(viewer.entities);
-    viewer.clock.onTick.addEventListener(animateTaxis); // Taksiler hareket etsin (Atmosfer için)
+    // Taksiler arkada hareket etsin ama oyun başlamasın
+    viewer.clock.onTick.addEventListener(animateTaxis); 
 }
 
-// --- 2. AŞAMA: OYUNU BAŞLATMA (Butona basınca çalışır) ---
+// --- AŞAMA 2: OYUNU BAŞLATMA (Butona Basınca) ---
 window.startGame = function() {
-    // Giriş ekranını gizle
+    // 1. Giriş Ekranını Kaldır
     const startScreen = document.getElementById('start-screen');
     startScreen.style.opacity = '0';
     setTimeout(() => startScreen.style.display = 'none', 500);
 
-    // Oyunu Aktif Et
-    gameActive = true;
-    startTimer();
-    
-    // İLK VİRÜSÜ SAL!
-    spawnInfection(8); 
-    
-    setStatus("PROTOCOL INITIATED! LEVEL 1 START!", "cyan");
-    console.log("OYUN BAŞLADI!");
+    // 2. Sinematik Uçuşu Başlat! (Uzaydan Manhattan'a)
+    flyToDrone();
+
+    // 3. Oyun Mantığını Başlat (Uçuş bitince başlasın diye 3sn gecikme)
+    setTimeout(() => {
+        gameActive = true;
+        startTimer();
+        spawnInfection(8); // Hızlı başlangıç
+        setStatus("LEVEL 1 START! (Target: 1000 pts)", "cyan");
+        console.log("OYUN BAŞLADI!");
+    }, 3000); // 3000ms = Uçuş süresi
 };
 
 // --- ZAMANLAYICI ---
@@ -152,9 +152,7 @@ function startTimer() {
             healRandomTaxis(10); 
         }
         
-        // Virüs yayılma hızı
         let spawnChance = Math.min(0.6, 0.40 + (currentLevel * 0.05));
-        
         if (Math.random() < spawnChance) {
             spawnInfection(1); 
         }
@@ -198,10 +196,13 @@ function checkLevelUp() {
 function levelUp(lvl) {
     currentLevel = lvl;
     document.getElementById('level-display').innerText = currentLevel;
+    
     timeLeft += 25; 
     let nextTarget = getTargetScore(lvl + 1); 
+    
     setStatus(`LEVEL UP! NEXT TARGET: ${nextTarget} PTS`, "cyan");
     triggerComboVisual(`LEVEL ${lvl}`, false);
+    
     spawnInfection(3 + Math.min(lvl, 10)); 
 }
 
@@ -230,11 +231,9 @@ function endGame(reason) {
 }
 
 function animateTaxis() {
-    // Not: gameActive kontrolünü kaldırdım ki menüdeyken arkada taksiler hareket etsin (Görsellik için)
-    
+    // Not: gameActive kontrolünü kaldırdım ki menüdeyken arkada hareket etsinler
     taxiEntities.forEach(item => {
         let speed = item.data.speed * Math.min(8.0, (4.0 + currentLevel * 0.5));
-        
         if (item.data.isInfected) speed *= 1.2; 
 
         item.progress += item.data.speed * speed;
@@ -258,8 +257,7 @@ function animateTaxis() {
 // --- ETKİLEŞİM ---
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function(movement) {
-    if (!gameActive) return; // Oyun başlamadıysa tıklama çalışmaz!
-    
+    if (!gameActive) return; // Oyun başlamadan tıklama çalışmaz
     const cartesian = viewer.scene.pickPosition(movement.position);
     if (cartesian) {
         const c = Cesium.Cartographic.fromCartesian(cartesian);
@@ -269,7 +267,7 @@ handler.setInputAction(function(movement) {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 function createQuarantineVisual(pos) {
-    let visualRadius = Math.max(300.0, 700.0 - (currentLevel * 50.0));
+    let visualRadius = Math.max(300.0, 600.0 - (currentLevel * 30.0));
     const q = viewer.entities.add({
         position: pos,
         cylinder: { length: 1500.0, topRadius: visualRadius, bottomRadius: visualRadius, material: Cesium.Color.LIME.withAlpha(0.4), outline: true }
@@ -300,7 +298,6 @@ function checkQuarantineZone(lng, lat) {
         }
     });
 
-    // --- SONUÇLAR ---
     if (caughtInfected > 0) {
         mistakeCount = 0; 
         const now = Date.now();
@@ -374,5 +371,5 @@ function setStatus(text, color) {
     }
 }
 
-// 4 Saniye sonra ÖN YÜKLEMEYİ başlat (Menu Açılır)
+// SAYFA YÜKLENİNCE ÖN YÜKLEMEYİ BAŞLAT
 setTimeout(preloadGame, 4000);
