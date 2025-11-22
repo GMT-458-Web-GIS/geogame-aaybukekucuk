@@ -88,8 +88,7 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 * **Bottom Panel:** Houses the Chart.js analytics graph and status alerts (e.g., "🔥 COMBO x3").
 * **Theme:** Features a glassmorphism effect with neon accents suitable for a bio-hazard theme.
 
-### Gameplay Demo (GIF)
-*(Shows the 3D environment, 'Combo' mechanics, and UI interactions)*
+### Gameplay Demo
 
 ![QuarantineRush Gameplay](assets/image/quarantinerush.gif)
 
@@ -105,20 +104,74 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 
 ## 6. Project Directory Structure
 
+The project follows a modular file structure to separate logic, styles, and assets.
+
+```text
 QuarantineRush/
-├── index.html          # Main entry point (UI & Game Container)
-├── README.md           # Project documentation
+├── index.html          
+├── README.md        
 ├── src/
 │   ├── css/
-│   │   └── style.css   # Game styling, HUD, and animations
+│   │   └── style.css   
 │   └── js/
-│       ├── map.js      # Core game logic, CesiumJS setup, interactions
-│       └── sim_data.js # Taxi simulation data and coordinate generation
+│       ├── map.js      
+│       └── sim_data.js 
 └── assets/
-    ├── screenshot.png      # Layout sketch image
-    ├── quarantinerush.gif  # Gameplay demo GIF
-    └── sound/              # Audio assets
+    └── image/       
+        ├── drone.png
+        ├── gamedesign.png
+        ├── loginpanel.png
+        └── quarantinerush.gif     
+    ├── screenshot.png      
+    ├── quarantinerush.gif  
+    └── sound/              
         ├── start.mp3
         ├── alert.mp3
         ├── gameover.mp3
         └── soundtrack.mp3
+
+---
+
+## 7. AI Assistance Statement
+
+This project utilized Artificial Intelligence tools (LLMs) as a coding assistant and co-pilot during the development process.
+
+**Code Debugging:** AI was used to identify syntax errors and debug logic issues in JavaScript functions.
+
+**Optimization:** AI suggested methods to optimize the rendering loop for better performance with 3D tiles.
+
+**Documentation:** AI assisted in structuring and refining the technical documentation and README file.
+
+All core game concepts, logic design, and final implementation decisions were made by the author.
+
+---
+
+## 8. References & Credits
+
+The following resources, libraries, and datasets were used or consulted during the development of this project:
+
+
+📚 **Libraries & Documentation**
+- **CesiumJS Documentation:** Primary resource for 3D globe rendering, entity management, and camera flight logic.
+- **Turf.js API:** Essential for geospatial analysis (distance, point) and collision detection logic.
+- **Chart.js Docs:** Reference for implementing the dynamic stacked area chart.
+- **MDN Web Audio API:** Guide for implementing the AudioContext system for sound effects.
+
+
+🎨 **Assets & Design Resources**
+- **Pixabay Sound Effects:** Source for all royalty-free audio assets (start, alert, gameover, soundtrack).
+    [**Pixabay Sound**](https://pixabay.com/sound-effects/)
+
+- **Google Fonts (Rajdhani):** Utilized for the futuristic/cyberpunk UI typography.
+- **Coolors.co:** Consulted for generating the Neon Cyan/Red color palette used in the interface.
+
+
+💾 **Data Sources & Inspiration**
+- **NYC TLC Trip Record Data:** Studied to understand real-world taxi density and hotspot locations for the simulation logic.
+- **Google Photorealistic 3D Tiles:** The underlying 3D model data provided via Cesium Ion.
+- **Cesium Sandcastle Examples:** Referenced for implementing "Bloom" post-processing effects.
+
+
+### 🔬 Related Works & Inspiration
+- **NYC Taxi Visualization:** [SIZMW/nyc-taxi-vis](https://github.com/SIZMW/nyc-taxi-vis) - Inspired the visualization of taxi density in NYC.
+- **GeoGami Project:** [geogami-team/geogami](https://github.com/geogami-team/geogami) - Reference for spatial learning game mechanics.
