@@ -1,8 +1,7 @@
 # ☣️ QuarantineRush: GMT458 Advanced GeoGame Project
 
 **Course:** GMT458 - Web GIS  
-**Author:** [ADINIZI SOYADINIZI BURAYA YAZIN]  
-**Student ID:** [NUMARANIZI BURAYA YAZIN]
+**Author:** Aybüke Küçük 
 
 ### 🎮 Live Demo (Play Now)
 [**Click Here to Play QuarantineRush on GitHub Pages**](https://gmt-458-web-gis.github.io/geogame-aaybukekucuk/)
@@ -19,7 +18,7 @@ Unlike traditional 2D map games, this project utilizes **CesiumJS** to render a 
 
 ---
 
-## 2. Game Mechanics (Assignment Objectives)
+## 2. Game Mechanics
 
 This section addresses the specific design requirements outlined in the assignment description.
 
@@ -45,30 +44,30 @@ The player starts with **3 Immunity Lives (☣️)**. A sophisticated penalty sy
 
 ---
 
-## 3. Technical Stack & Bonus Features
+## 3. Technical Stack
 
 This project integrates multiple **Advanced Geovisualisation and Data Analysis** packages, exceeding the basic requirements to achieve bonus points.
 
-### 🌍 1. CesiumJS (3D Engine & Visualization)
+### 1. CesiumJS (3D Engine & Visualization)
 * **Why:** Replaces standard 2D maps (Leaflet/OpenLayers) with a **Photorealistic 3D Globe**.
 * **Implementation:**
     * Renders Google's 3D Tiles of NYC buildings.
     * Manages 3D Entities (Box geometries for taxis, Cylinders for quarantine zones).
     * **Post-Processing:** Uses **Bloom (Glow) Effects** to create a neon/cyberpunk atmosphere for infected units.
 
-### 🎯 2. Turf.js (Geospatial Analysis)
+### 2. Turf.js (Geospatial Analysis)
 * **Why:** Provides client-side spatial analysis capabilities.
 * **Implementation:**
     * **`turf.distance()`**: Calculates the real-world distance between the user's click coordinate and moving taxi agents in kilometers.
     * **Buffer Logic:** Determines if a point (taxi) falls within a specific radius (quarantine zone) instantly.
 
-### 📊 3. Chart.js (Data Visualization)
+### 3. Chart.js (Data Visualization)
 * **Why:** Visualizes temporal game data.
 * **Implementation:**
     * A live-updating **Stacked Area Chart** on the HUD.
     * Tracks the **Healthy vs. Infected** population in real-time, providing visual feedback on the outbreak status.
 
-### 🔊 4. AudioContext API (Immersive Audio)
+### 4. AudioContext API (Immersive Audio)
 * **Why:** Enhances user experience.
 * **Implementation:** Custom sound engine handling background music, success chimes (Combo), and alarm sirens (Game Over) dynamically.
 
@@ -92,14 +91,15 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 ### Gameplay Demo (GIF)
 *(Shows the 3D environment, 'Combo' mechanics, and UI interactions)*
 
-![QuarantineRush Gameplay](assets/quarantinerush.gif)
+![QuarantineRush Gameplay](assets/image/quarantinerush.gif)
 
 ### Layout Screenshot
-![Login Panel ](assets/loginpanel.png)
 
-![Start Game ](assets/drone.png)
+![Login Panel ](assets/image/loginpanel.png)
 
-![Game Layout ](assets/gamedesign.png)
+![Start Game ](assets/image/drone.png)
+
+![Game Layout ](assets/image/gamedesign.png)
 
 ---
 
