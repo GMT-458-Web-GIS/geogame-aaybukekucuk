@@ -1,12 +1,12 @@
-# ☣️ QuarantineRush: GMT458 Advanced GeoGame Project
-
-![Game logo](assets/image/game.png)
+# ☣️ QuarantineRush: GeoGame Project
 
 **Course:** GMT458 - Web GIS  
 **Author:** Aybüke Küçük 
 
-### 🎮 Live Demo (Play Now)
-[**Click Here to Play QuarantineRush on GitHub Pages**](https://gmt-458-web-gis.github.io/geogame-aaybukekucuk/)
+![Game logo](assets/image/game.png)
+
+### 🎮 Play Now
+[**Click Here to Play QuarantineRush**](https://gmt-458-web-gis.github.io/geogame-aaybukekucuk/)
 
 ---
 
@@ -49,6 +49,13 @@ The player starts with **3 Immunity Lives (☣️)**. A sophisticated penalty sy
 ## 3. Technical Stack
 
 This project integrates multiple **Advanced Geovisualisation and Data Analysis** packages, exceeding the basic requirements to achieve bonus points.
+
+| Component | Library / Tech |
+| :--- | :--- | 
+| **3D Game Engine** | **CesiumJS** | 
+| **Spatial Analysis** | **Turf.js** | 
+| **Data Viz** | **Chart.js** | 
+| **Audio System** | **AudioContext API** | 
 
 ### 3.1 CesiumJS (3D Engine & Visualization)
 * **Why:** Replaces standard 2D maps (Leaflet/OpenLayers) with a **Photorealistic 3D Globe**.
@@ -184,4 +191,3 @@ QuarantineRush/
         ├── alert.mp3
         ├── gameover.mp3
         └── soundtrack.mp3
-
