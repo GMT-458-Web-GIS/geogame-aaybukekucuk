@@ -1,73 +1,124 @@
-# ☣️ QuarantineRush: GMT458 - GeoGame Project
+# ☣️ QuarantineRush: GMT458 Advanced GeoGame Project
 
 **Course:** GMT458 - Web GIS  
-**Author:** Aybüke Küçük
+**Author:** [ADINIZI SOYADINIZI BURAYA YAZIN]  
+**Student ID:** [NUMARANIZI BURAYA YAZIN]
+
+### 🎮 Live Demo (Play Now)
+[**Click Here to Play QuarantineRush on GitHub Pages**](https://gmt-458-web-gis.github.io/geogame-aaybukekucuk/)
 
 ---
 
-## 1. Project Aim & Concept
+## 1. Project Overview & Concept
 
-**QuarantineRush** is a high-stakes 3D interactive GeoGame developed to meet the requirements of the GMT458 assignment.
+**QuarantineRush** is a high-stakes, 3D interactive **GeoGame** developed as a capstone project for the GMT458 Web GIS course.
 
-The game is built on a photorealistic 3D model of New York City. The player acts as a crisis manager, tasked with identifying and containing a spreading "Zombie Virus" carried by taxi units. The goal is to achieve the highest score possible by curing taxis, surviving for 60 seconds, and managing limited lives and resources.
+Unlike traditional 2D map games, this project utilizes **CesiumJS** to render a **photorealistic 3D model of New York City**. The player assumes the role of a **Crisis Operations Manager** during a zombie virus outbreak spreading through the city's taxi network.
 
-## 2. Design of the GeoGame (Answers to Assignment Questions)
-
-### ▪️ How the game will progress? (Difficulty & Progression)
-
-The game's progression is based on a dynamic **Level and Score System**:
-
-1.  **Time-Based:** The core game loop is a **60-second** sprint. The player's score determines their progression.
-2.  **Levels (Difficulty):** The game is a "complete as many tasks as possible" challenge.
-    * **Level 1 Target:** 1000 Points.
-    * **Level 2 Target:** 3000 Points (Requires +2000 more).
-    * **Level 3 Target:** 6000 Points (Requires +3000 more).
-    * The score required to level up increases progressively.
-3.  **Difficulty Scaling:** As the player levels up:
-    * Infected taxis spawn **more frequently**.
-    * All taxis (especially infected ones) move **faster**.
-    * The player's quarantine buffer **shrinks**, requiring higher precision.
-    * The player receives a small **time bonus** as a reward.
-
-### ▪️ How many questions will there be?
-This is a real-time strategy game, not a quiz. There are no "questions." The **tasks are the dynamically spawning infected taxis**. The number of tasks is unlimited; the challenge is to cure as many as possible within the time and life limits.
-
-### ▪️ How many lives, if any, does a user have?
-Yes, the player has **3 Immunity Lives (☣️)**. A life is lost in two ways:
-
-1.  **Mistake Penalty:** If the player clicks incorrectly 2 times (hitting an empty area OR a healthy-only zone), they lose 1 life.
-2.  **Infection Overload:** If the total number of infected taxis on the map exceeds a critical threshold, they are penalized 1 life.
+**The Goal:** Utilize real-time geospatial analysis tools to identify infected agents (Red Taxis), distinguish them from civilians (Yellow Taxis), and deploy quarantine buffers to contain the outbreak before the infection rate becomes critical.
 
 ---
 
-## 3. Technology Stack & Bonus Point Justification
+## 2. Game Mechanics (Assignment Objectives)
 
-This project explores advanced JavaScript libraries beyond Leaflet/OpenLayers to meet the **bonus** criteria:
+This section addresses the specific design requirements outlined in the assignment description.
 
-* ### 1. CesiumJS (Advanced Geovisualisation - BONUS)
-    This is the **core 3D engine** of the game. It renders Google's **Photorealistic 3D Tiles** of NYC and manages all 3D game objects (taxis as `Box` entities, quarantine zones as `Cylinder` entities).
+### ▪️ How does the game progress? (Difficulty & Progression)
+The game features a **Dynamic Difficulty System** based on the player's score:
 
-* ### 2. Turf.js (Data Analysis Package - BONUS)
-    This is the "Geo" brain of the game. When the player clicks, **`Turf.js`** performs a real-time **geospatial analysis** (`turf.distance()`) to calculate which taxis are inside the quarantine buffer (a core "Point-in-Polygon" operation).
+1.  **Temporal Component:** The game is a race against time starting with **60 seconds**.
+2.  **Leveling System:**
+    * **Level 1:** Standard speed, low infection rate.
+    * **Level 2+:** Taxis move faster, infection spreads more aggressively (up to 50% spawn rate).
+    * **Visual Progression:** As levels increase, the game time shifts from **Noon -> Sunset -> Night**, activating city lights and neon bloom effects.
+3.  **Precision Challenge:** As the player levels up, the **Quarantine Buffer Radius shrinks**, requiring higher spatial precision to catch viruses without hitting civilians.
 
-* ### 3. Chart.js (Data Analysis Package - BONUS)
-    The HUD features a live-updating **Stacked Area Chart**. This chart visualizes the real-time ratio of Healthy vs. Infected taxis, providing critical statistical feedback.
+### ▪️ How many questions/tasks will there be?
+This is a **Continuous Simulation Game**, not a static quiz.
+* **Tasks:** The "tasks" are dynamically spawning infected taxis.
+* **Count:** Unlimited. The game generates procedural taxi routes endlessly until the player loses all lives or time runs out.
+
+### ▪️ How many lives does the user have?
+The player starts with **3 Immunity Lives (☣️)**. A sophisticated penalty system is in place:
+* **Mistake Penalty:** Clicking on empty space or quarantining *only* healthy taxis adds to a "Mistake Counter." **2 Mistakes = 1 Life Lost.**
+* **Infection Overload:** If the total number of infected taxis exceeds a critical threshold (40+), the city's defense fails, and a life is lost.
+
+---
+
+## 3. Technical Stack & Bonus Features
+
+This project integrates multiple **Advanced Geovisualisation and Data Analysis** packages, exceeding the basic requirements to achieve bonus points.
+
+### 🌍 1. CesiumJS (3D Engine & Visualization)
+* **Why:** Replaces standard 2D maps (Leaflet/OpenLayers) with a **Photorealistic 3D Globe**.
+* **Implementation:**
+    * Renders Google's 3D Tiles of NYC buildings.
+    * Manages 3D Entities (Box geometries for taxis, Cylinders for quarantine zones).
+    * **Post-Processing:** Uses **Bloom (Glow) Effects** to create a neon/cyberpunk atmosphere for infected units.
+
+### 🎯 2. Turf.js (Geospatial Analysis)
+* **Why:** Provides client-side spatial analysis capabilities.
+* **Implementation:**
+    * **`turf.distance()`**: Calculates the real-world distance between the user's click coordinate and moving taxi agents in kilometers.
+    * **Buffer Logic:** Determines if a point (taxi) falls within a specific radius (quarantine zone) instantly.
+
+### 📊 3. Chart.js (Data Visualization)
+* **Why:** Visualizes temporal game data.
+* **Implementation:**
+    * A live-updating **Stacked Area Chart** on the HUD.
+    * Tracks the **Healthy vs. Infected** population in real-time, providing visual feedback on the outbreak status.
+
+### 🔊 4. AudioContext API (Immersive Audio)
+* **Why:** Enhances user experience.
+* **Implementation:** Custom sound engine handling background music, success chimes (Combo), and alarm sirens (Game Over) dynamically.
 
 ---
 
 ## 4. Data Source (NYC Taxi Data)
-The assignment requirement to `Explore NYC taxi data` is met by simulating taxi movement patterns based on real-world NYC hotspots (Times Square, Wall Street, Central Park, etc.).
+In compliance with the assignment ("Explore NYC taxi data"), this project simulates taxi patterns based on **real-world NYC hotspots**.
+* The `sim_data.js` file contains coordinates for key locations (Times Square, Wall Street, Penn Station, etc.).
+* Taxi agents are procedurally generated to travel between these authentic hubs, mimicking real traffic density.
 
 ---
 
-## 5. Frontend Layout & Sketch
+## 5. Frontend Layout & Visuals
 
-The layout is a futuristic "Heads-Up Display (HUD)" designed for instant readability.
+The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 
-* **Top Panel:** Displays critical stats (Lives ☣️, Time, Level, Score).
-* **Bottom Panel:** Shows the `Chart.js` live infection graph and status messages (e.g., "🔥 COMBO!", "💔 LIFE LOST!").
-* **Camera Controls:** Allows switching between "Drone View" and "Street View".
+* **Top Panel:** Displays Lives, Time, Current Level, and Score.
+* **Bottom Panel:** Houses the Chart.js analytics graph and status alerts (e.g., "🔥 COMBO x3").
+* **Theme:** Features a glassmorphism effect with neon accents suitable for a bio-hazard theme.
 
-### Screenshot (Layout Sketch)
+### Gameplay Demo (GIF)
+*(Shows the 3D environment, 'Combo' mechanics, and UI interactions)*
 
-![Game Layout Screenshot](assets/screenshot.png)
+![QuarantineRush Gameplay](assets/quarantinerush.gif)
+
+### Layout Screenshot
+![Login Panel ](assets/loginpanel.png)
+
+![Start Game ](assets/drone.png)
+
+![Game Layout ](assets/gamedesign.png)
+
+---
+
+## 6. Project Directory Structure
+
+QuarantineRush/
+├── index.html          # Main entry point (UI & Game Container)
+├── README.md           # Project documentation
+├── src/
+│   ├── css/
+│   │   └── style.css   # Game styling, HUD, and animations
+│   └── js/
+│       ├── map.js      # Core game logic, CesiumJS setup, interactions
+│       └── sim_data.js # Taxi simulation data and coordinate generation
+└── assets/
+    ├── screenshot.png      # Layout sketch image
+    ├── quarantinerush.gif  # Gameplay demo GIF
+    └── sound/              # Audio assets
+        ├── start.mp3
+        ├── alert.mp3
+        ├── gameover.mp3
+        └── soundtrack.mp3
