@@ -25,12 +25,12 @@ This section addresses the specific design requirements outlined in the assignme
 ### ▪️ How does the game progress? (Difficulty & Progression)
 The game features a **Dynamic Difficulty System** based on the player's score:
 
-1.  **Temporal Component:** The game is a race against time starting with **60 seconds**.
-2.  **Leveling System:**
-    * **Level 1:** Standard speed, low infection rate.
-    * **Level 2+:** Taxis move faster, infection spreads more aggressively (up to 50% spawn rate).
-    * **Visual Progression:** As levels increase, the game time shifts from **Noon -> Sunset -> Night**, activating city lights and neon bloom effects.
-3.  **Precision Challenge:** As the player levels up, the **Quarantine Buffer Radius shrinks**, requiring higher spatial precision to catch viruses without hitting civilians.
+1. **Temporal Component:** The game is a race against time starting with **60 seconds**.
+2. **Leveling System:**
+   * **Level 1:** Standard speed, low infection rate.
+   * **Level 2+:** Taxis move faster, infection spreads more aggressively (up to 50% spawn rate).
+   * **Visual Progression:** As levels increase, the game time shifts from **Noon -> Sunset -> Night**, activating city lights and neon bloom effects.
+3. **Precision Challenge:** As the player levels up, the **Quarantine Buffer Radius shrinks**, requiring higher spatial precision to catch viruses without hitting civilians.
 
 ### ▪️ How many questions/tasks will there be?
 This is a **Continuous Simulation Game**, not a static quiz.
@@ -48,26 +48,26 @@ The player starts with **3 Immunity Lives (☣️)**. A sophisticated penalty sy
 
 This project integrates multiple **Advanced Geovisualisation and Data Analysis** packages, exceeding the basic requirements to achieve bonus points.
 
-### 1. CesiumJS (3D Engine & Visualization)
+### 3.1 CesiumJS (3D Engine & Visualization)
 * **Why:** Replaces standard 2D maps (Leaflet/OpenLayers) with a **Photorealistic 3D Globe**.
 * **Implementation:**
-    * Renders Google's 3D Tiles of NYC buildings.
-    * Manages 3D Entities (Box geometries for taxis, Cylinders for quarantine zones).
-    * **Post-Processing:** Uses **Bloom (Glow) Effects** to create a neon/cyberpunk atmosphere for infected units.
+  * Renders Google's 3D Tiles of NYC buildings.
+  * Manages 3D Entities (Box geometries for taxis, Cylinders for quarantine zones).
+  * **Post-Processing:** Uses **Bloom (Glow) Effects** to create a neon/cyberpunk atmosphere for infected units.
 
-### 2. Turf.js (Geospatial Analysis)
+### 3.2 Turf.js (Geospatial Analysis)
 * **Why:** Provides client-side spatial analysis capabilities.
 * **Implementation:**
-    * **`turf.distance()`**: Calculates the real-world distance between the user's click coordinate and moving taxi agents in kilometers.
-    * **Buffer Logic:** Determines if a point (taxi) falls within a specific radius (quarantine zone) instantly.
+  * **`turf.distance()`**: Calculates the real-world distance between the user's click coordinate and moving taxi agents in kilometers.
+  * **Buffer Logic:** Determines if a point (taxi) falls within a specific radius (quarantine zone) instantly.
 
-### 3. Chart.js (Data Visualization)
+### 3.3 Chart.js (Data Visualization)
 * **Why:** Visualizes temporal game data.
 * **Implementation:**
-    * A live-updating **Stacked Area Chart** on the HUD.
-    * Tracks the **Healthy vs. Infected** population in real-time, providing visual feedback on the outbreak status.
+  * A live-updating **Stacked Area Chart** on the HUD.
+  * Tracks the **Healthy vs. Infected** population in real-time, providing visual feedback on the outbreak status.
 
-### 4. AudioContext API (Immersive Audio)
+### 3.4 AudioContext API (Immersive Audio)
 * **Why:** Enhances user experience.
 * **Implementation:** Custom sound engine handling background music, success chimes (Combo), and alarm sirens (Game Over) dynamically.
 
@@ -94,11 +94,11 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 
 ### Layout Screenshot
 
-![Login Panel ](assets/image/loginpanel.png)
+![Login Panel](assets/image/loginpanel.png)
 
-![Start Game ](assets/image/drone.png)
+![Start Game](assets/image/drone.png)
 
-![Game Layout ](assets/image/gamedesign.png)
+![Game Layout](assets/image/gamedesign.png)
 
 ---
 
@@ -130,48 +130,51 @@ QuarantineRush/
         ├── gameover.mp3
         └── soundtrack.mp3
 
----
+7. AI Assistance Statement
 
-## 7. AI Assistance Statement
+The development of this project was supported by Artificial Intelligence tools (LLMs) used as coding assistants and co-pilots.
 
-This project utilized Artificial Intelligence tools (LLMs) as a coding assistant and co-pilot during the development process.
+Code Debugging: AI helped identify syntax errors and debug logic issues in JavaScript functions.
 
-**Code Debugging:** AI was used to identify syntax errors and debug logic issues in JavaScript functions.
+Optimization: AI suggested methods to optimize the rendering loop for better performance with 3D tiles.
 
-**Optimization:** AI suggested methods to optimize the rendering loop for better performance with 3D tiles.
+Documentation: AI assisted in structuring and refining technical documentation and this README.
 
-**Documentation:** AI assisted in structuring and refining the technical documentation and README file.
+Note: All core game concepts, logic design, and final implementation decisions were made by the author.
 
-All core game concepts, logic design, and final implementation decisions were made by the author.
+8. References & Credits
 
----
+The following resources, libraries, and datasets were consulted or used during development:
 
-## 8. References & Credits
+📚 Libraries & Documentation
 
-The following resources, libraries, and datasets were used or consulted during the development of this project:
+CesiumJS Documentation: For 3D globe rendering, entity management, and camera flight logic.
 
+Turf.js API: For geospatial analysis and collision detection.
 
-📚 **Libraries & Documentation**
-- **CesiumJS Documentation:** Primary resource for 3D globe rendering, entity management, and camera flight logic.
-- **Turf.js API:** Essential for geospatial analysis (distance, point) and collision detection logic.
-- **Chart.js Docs:** Reference for implementing the dynamic stacked area chart.
-- **MDN Web Audio API:** Guide for implementing the AudioContext system for sound effects.
+Chart.js Docs: For implementing the live stacked area chart.
 
+MDN Web Audio API: For integrating AudioContext sound effects.
 
-🎨 **Assets & Design Resources**
-- **Pixabay Sound Effects:** Source for all royalty-free audio assets (start, alert, gameover, soundtrack).
-    [**Pixabay Sound**](https://pixabay.com/sound-effects/)
+🎨 Assets & Design Resources
 
-- **Google Fonts (Rajdhani):** Utilized for the futuristic/cyberpunk UI typography.
-- **Coolors.co:** Consulted for generating the Neon Cyan/Red color palette used in the interface.
+Pixabay Sound Effects: Royalty-free audio assets (start, alert, gameover, soundtrack).
+Pixabay Sound
 
+Google Fonts (Rajdhani): Used for futuristic/cyberpunk typography.
 
-💾 **Data Sources & Inspiration**
-- **NYC TLC Trip Record Data:** Studied to understand real-world taxi density and hotspot locations for the simulation logic.
-- **Google Photorealistic 3D Tiles:** The underlying 3D model data provided via Cesium Ion.
-- **Cesium Sandcastle Examples:** Referenced for implementing "Bloom" post-processing effects.
+Coolors.co: Consulted for Neon Cyan/Red palette.
 
+💾 Data Sources & Inspiration
 
-### 🔬 Related Works & Inspiration
-- **NYC Taxi Visualization:** [SIZMW/nyc-taxi-vis](https://github.com/SIZMW/nyc-taxi-vis) - Inspired the visualization of taxi density in NYC.
-- **GeoGami Project:** [geogami-team/geogami](https://github.com/geogami-team/geogami) - Reference for spatial learning game mechanics.
+NYC TLC Trip Record Data: For taxi density and hotspot simulation.
+
+Google Photorealistic 3D Tiles: 3D model data via Cesium Ion.
+
+Cesium Sandcastle Examples: For Bloom post-processing effects.
+
+🔬 Related Works & Inspiration
+
+NYC Taxi Visualization: SIZMW/nyc-taxi-vis
+
+GeoGami Project: geogami-team/geogami
