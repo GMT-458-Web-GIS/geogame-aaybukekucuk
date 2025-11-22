@@ -1,9 +1,9 @@
-/* Temel Ayarlar */
+/* Temel ayarları yaptım */
 body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Rajdhani', sans-serif; }
 #cesiumContainer { width: 100%; height: 100%; }
 .cesium-viewer-bottom { display: none; }
 
-/* PANELLER (Daha şeffaf ve küçük) */
+/* Panelleri düzenledim */
 .panel {
     position: absolute;
     background: rgba(0, 0, 0, 0.75); /* Daha şeffaf */
@@ -15,13 +15,13 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     z-index: 10;
 }
 
-/* SOL ÜST */
+/* Sol üst panel */
 .top-left { top: 10px; left: 10px; border-left: 3px solid red; }
 .game-title { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 1px; } 
 .sub-title { font-size: 10px; color: #aaa; font-weight: normal; }
 .danger { color: red; }
 
-/* ORTA ÜST (SKOR TABLOSU) */
+/* Skor tablosu */
 .top-center { 
     top: 10px; left: 50%; transform: translateX(-50%); 
     display: flex; gap: 20px; align-items: center; 
@@ -32,7 +32,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .hud-label { font-size: 9px; color: #00ffcc; font-weight: bold; display: block; margin-bottom: 0;}
 .hud-value { font-size: 22px; font-weight: bold; font-family: monospace; text-shadow: none; } 
 
-/* SAĞ ÜST */
+/* Sağ üst panel */
 .top-right { top: 10px; right: 10px; display: flex; gap: 5px; }
 .cam-btn { 
     background: rgba(34, 34, 34, 0.9); 
@@ -42,53 +42,52 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 }
 .cam-btn:hover { background: #00ffcc; color: black; }
 
-/* ALT PANEL */
+/* Alt panel */
 .bottom-center { 
     bottom: 15px; left: 50%; transform: translateX(-50%); 
     display: flex; flex-direction: column; align-items: center;
     border-bottom: 3px solid red;
     padding-bottom: 5px;
 }
-/* Grafik boyutunu HTML'den de küçülteceğiz */
+/* Grafik boyutunu düzenledim */
 #status-text { font-size: 14px; margin-top: 5px; font-weight: bold; text-transform: uppercase; color: rgb(250, 250, 0);} 
 
-/* OYUN SONU */
+/* Game Over paneli */
 .hidden { display: none !important; }
 #game-over-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; justify-content: center; align-items: center; }
 .modal-content { border: 2px solid red; padding: 30px; text-align: center; background: black; color: white; border-radius: 10px;}
 .restart-btn { padding: 8px 20px; background: red; color: white; border: none; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px;}
 
-/* --- COMBO EFEKTİ --- */
+/* CoOMBO EFEKTİ */
 
 /* Grafiğin üzerindeki yazı */
 #combo-popup {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Tam ortala */
+    transform: translate(-50%, -50%);
     
     font-family: 'Rajdhani', sans-serif;
-    font-size: 40px; /* Kocaman olsun */
+    font-size: 40px;
     font-weight: 900;
     font-style: italic;
     
-    color: #fff700; /* Altın Sarısı */
+    color: #fff700;
     text-shadow: 
         0 0 10px #ffaa00, 
         0 0 20px #ff0000, 
-        2px 2px 0px #000; /* Neon Parlama ve Gölge */
+        2px 2px 0px #000;
     
-    z-index: 20; /* Grafiğin üstünde kalsın */
-    pointer-events: none; /* Tıklamayı engellemesin */
+    z-index: 20;
+    pointer-events: none;  
     white-space: nowrap;
 }
 
-/* Animasyon Sınıfı (JS ile ekleyip çıkaracağız) */
+/* Animasyon */
 .combo-anim {
     animation: popUp 0.8s ease-out forwards;
 }
 
-/* Animasyonun kendisi: Büyü -> Salla -> Kaybol */
 @keyframes popUp {
     0% {
         opacity: 0;
@@ -106,23 +105,22 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
     }
     100% {
-        opacity: 0; /* Yavaşça kaybol */
+        opacity: 0; /* Combo yazısının yavaşça kaybolmasını sağladım */
         transform: translate(-50%, -50%) scale(1.2);
     }
 }
 
-/* KÖTÜ DURUM YAZISI (KIRMIZI) */
 .danger-text {
     color: #ff0000 !important; /* Kırmızı */
     text-shadow: 0 0 20px #800000, 2px 2px 0px #000 !important; /* Koyu Kırmızı Gölge */
 }
 
-/* Temel Ayarlar */
+/* Temel ayarlar */
 body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Rajdhani', sans-serif; }
 #cesiumContainer { width: 100%; height: 100%; }
 .cesium-viewer-bottom { display: none; }
 
-/* --- GİRİŞ EKRANI (START SCREEN) - GÜNCELLENDİ --- */
+/* GİRİŞ EKRANI */
 #start-screen {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.7); 
@@ -132,20 +130,20 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 
 .start-content {
     text-align: center; 
-    border: 4px solid #00ffcc; /* Çerçeve kalınlaştı */
+    border: 4px solid #00ffcc;
     padding: 50px; 
     background: rgba(0, 15, 20, 0.95); 
     border-radius: 20px;
     box-shadow: 0 0 60px rgba(0, 255, 204, 0.3); 
-    width: 600px; /* Genişlik arttı */
+    width: 600px;
     max-width: 90%;
 }
 
-/* BAŞLIK RENGİ DÜZELTİLDİ */
+/* Başlık rengi */
 .main-title {
-    font-size: 50px; /* BÜYÜTÜLDÜ */
+    font-size: 50px;
     margin-bottom: 20px;
-    color: #ffffff !important; /* Zorla BEYAZ yap */
+    color: #ffffff !important;
     text-shadow: 0 0 20px #00ffcc;
     font-family: 'Rajdhani', sans-serif;
     font-weight: 900;
@@ -164,7 +162,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .mission-brief h3 { 
     color: #ffcc00; 
     margin: 0 0 15px 0; 
-    font-size: 24px; /* BÜYÜTÜLDÜ */
+    font-size: 24px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -180,7 +178,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .mission-brief li { 
     color: #fff; 
     margin-bottom: 10px; 
-    font-size: 18px; /* LİSTE YAZILARI BÜYÜTÜLDÜ */
+    font-size: 18px;
     font-weight: 500;
     line-height: 1.4;
 }
@@ -189,7 +187,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     background: rgba(0, 255, 204, 0.15); 
     color: #00ffcc; 
     border: 3px solid #00ffcc;
-    padding: 20px 60px; /* BUTON BÜYÜTÜLDÜ */
+    padding: 20px 60px;
     font-size: 28px; 
     font-weight: 900; 
     cursor: pointer;
@@ -201,7 +199,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 }
 .start-btn:hover { background: #00ffcc; color: black; box-shadow: 0 0 50px #00ffcc; }
 
-/* OYUN İÇİ PANELLER (Eski halini koruduk) */
+/* Oyunun içindeki panelleri düzenledim */
 .panel {
     position: absolute; background: rgba(0, 0, 0, 0.85); border: 2px solid #00ffcc;
     padding: 10px 15px; color: white; border-radius: 8px; z-index: 10;
@@ -223,7 +221,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .bottom-center { bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; border-bottom: 5px solid red; }
 #status-text { font-size: 18px; margin-top: 10px; font-weight: bold; color: yellow;} 
 
-/* COMBO & OYUN SONU */
+/* Combo ve oyunun sonu */
 #combo-popup {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     font-size: 40px; font-weight: 900; font-style: italic; color: #fff700;

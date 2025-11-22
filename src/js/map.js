@@ -1,7 +1,7 @@
-// 1. TOKEN
+// TOKEN
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwNWU0ZjY2Mi1kYzNmLTRmODItYjg0Yy1hOWMxNTI5YzMyOTYiLCJpZCI6MzYwMjk2LCJpYXQiOjE3NjMwOTQ5NDd9.duKVIeBuYP8KMTAGRd_9dWEwRR3YdmwOSoAY9rLxPcY';
 
-// 2. Viewer
+// Viewer
 const viewer = new Cesium.Viewer('cesiumContainer', {
     terrain: Cesium.Terrain.fromWorldTerrain(), 
     baseLayerPicker: false, geocoder: false, homeButton: false, infoBox: false, 
@@ -11,8 +11,8 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
 
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// --- SES SİSTEMİ (MUTE ÖZELLİKLİ) ---
-let isMuted = false; // Varsayılan: Ses Açık
+// Ses Sistemi (Mute özelliği ekledim)
+let isMuted = false; // Varsayılan: ses açık
 
 const sounds = {
     start: new Audio('assets/sound/start.mp3'),
@@ -24,26 +24,26 @@ const sounds = {
 // Arka plan müziği ayarı
 sounds.soundtrack.loop = true;
 sounds.soundtrack.volume = 0.4; 
-// Diğer sesleri ön yükle
+// Diğer sesleri yükledim
 Object.values(sounds).forEach(s => s.load());
 
-// MUTE BUTONU FONKSİYONU
+// Mute butonunu aktif ettim
 window.toggleMute = function() {
     isMuted = !isMuted;
     const btn = document.getElementById('mute-btn');
     
     if (isMuted) {
-        // SESSİZE AL
+        // Mute butonunun sesi kapatma işlevi
         btn.innerHTML = "🔇 OFF";
         btn.style.borderColor = "red";
         btn.style.color = "red";
         sounds.soundtrack.pause(); // Müziği durdur
     } else {
-        // SESİ AÇ
+        // Mute butonunun sesi açma işlevi
         btn.innerHTML = "🔊 ON";
         btn.style.borderColor = "#00ffcc";
         btn.style.color = "#00ffcc";
-        // Eğer oyun devam ediyorsa müziği başlat
+        // Eğer oyun devam ediyorsa müziği başlatma
         if (gameActive) sounds.soundtrack.play().catch(e => console.log(e));
     }
 };
@@ -68,7 +68,7 @@ function stopSound(type) {
     }
 }
 
-// 3. ŞEHİR YÜKLE
+// Şehir yükleme
 async function loadRealCity() {
     try {
         const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(2275207);
@@ -77,7 +77,6 @@ async function loadRealCity() {
 }
 loadRealCity();
 
-// --- DEĞİŞKENLER ---
 let gameActive = false;
 let score = 0;
 let timeLeft = 60; 
@@ -93,7 +92,7 @@ let lives = 3;
 let totalTaxis = 50; 
 let infectionThreshold = 40; 
 
-// --- KAMERA ---
+// Kamera efekti
 window.flyToDrone = function() {
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(-73.9857, 40.7484, 2000), 
@@ -110,13 +109,13 @@ window.flyToStreet = function() {
 };
 viewer.scene.globe.enableLighting = true;
 
-// UZAY KAMERASI (BAŞLANGIÇ)
+// Uzay kamerası
 viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(-95.0, 40.0, 20000000.0),
     orientation: { heading: 0.0, pitch: Cesium.Math.toRadians(-90.0), roll: 0.0 }
 });
 
-// --- CHART.JS ---
+// Chart.js
 function initChart() {
     const canvas = document.getElementById('infectionChart');
     if (!canvas) return;
@@ -140,7 +139,6 @@ function initChart() {
     });
 }
 
-// --- 1. HAZIRLIK ---
 function preloadGame() {
     console.log("Sistem Hazırlanıyor...");
     initChart(); 
@@ -171,12 +169,12 @@ function preloadGame() {
     viewer.clock.onTick.addEventListener(animateTaxis); 
 }
 
-// --- 2. BAŞLAT (GÜNCELLENDİ) ---
+// Başlat
 window.startGame = function() {
-    // Giriş sesini çal
+    // Giriş sesini çalma
     playSound('start');
     
-    // Arka plan müziğini başlat
+    // Arka plan müziğini başlatma
     playSound('soundtrack');
 
     const startScreen = document.getElementById('start-screen');
@@ -194,7 +192,7 @@ window.startGame = function() {
     }, 3000);
 };
 
-// --- ZAMANLAYICI ---
+// Zamanlayıcı
 function startTimer() {
     timerInterval = setInterval(() => {
         if (!gameActive) return;
@@ -241,7 +239,7 @@ function loseLife(reason) {
     if (lives <= 0) endGame("INFECTION WON!");
 }
 
-// --- LEVEL SİSTEMİ ---
+// Level sistemi
 function getTargetScore(level) {
     if (level === 1) return 1000;
     return (level * (level + 1) / 2) * 1000;
@@ -286,7 +284,7 @@ function healRandomTaxis(amount) {
 function endGame(reason) {
     gameActive = false;
     
-    // Müzikleri yönet
+    // Müziklerin yönetimi
     stopSound('soundtrack'); // Müziği kes
     playSound('gameover');   // Bitiş sesini çal
 
@@ -296,20 +294,16 @@ function endGame(reason) {
     document.getElementById('final-score').innerHTML = `${score}<br><small>${reason}</small>`;
 }
 
-// --- HIZ VE HAREKET MANTIĞI (DENGELENDİ) ---
+// Taksilerin hız ve hareket mantığını düzenledim
 function animateTaxis() {
     taxiEntities.forEach(item => {
-        // FORMÜL: 
-        // Taban Çarpan: 2.0 (Başlangıçta makul hız)
-        // Level Başına Artış: 0.5 (Kontrollü artış)
-        // Maksimum Çarpan: 6.0 (Çok hızlı ama takip edilebilir sınır)
+        // Level Başına Artış: 0.5 (Kontrollü bir şekilde her seviyede hızlanacak şekilde ayarladım)
         let levelMultiplier = 2.0 + (currentLevel * 0.5);
         let speedMultiplier = Math.min(6.0, levelMultiplier);
         
-        // Virüs Avantajı: %30 daha hızlı (Heyecan yaratır)
+        // Virüs hızı
         if (item.data.isInfected) speedMultiplier *= 1.3; 
 
-        // Hareketi uygula
         item.progress += item.data.speed * speedMultiplier;
 
         if (item.progress >= 1) {
@@ -328,7 +322,6 @@ function animateTaxis() {
     });
 }
 
-// --- ETKİLEŞİM ---
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function(movement) {
     if (!gameActive) return;
@@ -437,5 +430,5 @@ function setStatus(text, color) {
     }
 }
 
-// SAYFA YÜKLENİNCE ÖN YÜKLEMEYİ BAŞLAT
+// Sayfa yüklendikten sonra ön izlemeyi başlattım
 setTimeout(preloadGame, 1000);

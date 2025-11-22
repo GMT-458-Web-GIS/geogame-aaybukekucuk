@@ -1,4 +1,4 @@
-// --- src/js/sim_data.js ---
+// src/js/sim_data.js
 
 const GameState = {
     taxis: [],
@@ -23,7 +23,7 @@ function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Taksi Oluşturucu
+// Taksi oluşturdum
 function generateTaxis(count = 100) {
     const taxiFleet = [];
     const pointKeys = Object.keys(LOCATIONS);
@@ -43,10 +43,9 @@ function generateTaxis(count = 100) {
             position: [...LOCATIONS[startKey]],
             isInfected: false,
             
-            // --- HIZ AYARI (GAME DESIGN FIX) ---
-            // Taban Hız: 0.00005 (Yeterince yavaş ama hareketli)
-            // Rastgelelik: Sadece %20 fark eder.
-            // Sonuç: Hepsi akıcı bir trafik gibi hareket eder.
+            // HIZ AYARI
+            // Taban Hız: 0.00005 
+            // Taksilerin hepsi akıcı bir trafikteymiş gibi hareket eder
             speed: 0.0001 + (Math.random() * 0.0001) 
         });
     }
