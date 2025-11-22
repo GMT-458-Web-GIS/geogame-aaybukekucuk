@@ -1,5 +1,7 @@
 # ☣️ QuarantineRush: GMT458 Advanced GeoGame Project
 
+![Game logo](assets/image/game.png)
+
 **Course:** GMT458 - Web GIS  
 **Author:** Aybüke Küçük 
 
@@ -120,7 +122,7 @@ Note: All core game concepts, logic design, and final implementation decisions w
 
 The following resources, libraries, and datasets were consulted or used during development:
 
-* 📚 Libraries & Documentation
+### 📚 Libraries & Documentation
 
 * **CesiumJS Documentation:** For 3D globe rendering, entity management, and camera flight logic.
 
@@ -130,7 +132,7 @@ The following resources, libraries, and datasets were consulted or used during d
 
 * **MDN Web Audio API:** For integrating AudioContext sound effects.
 
-🎨 Assets & Design Resources
+### 🎨 Assets & Design Resources
 
 * **Pixabay Sound Effects:** Royalty-free audio assets (start, alert, gameover, soundtrack).
 Pixabay Sound
@@ -139,7 +141,7 @@ Pixabay Sound
 
 * **Coolors.co:** Consulted for Neon Cyan/Red palette.
 
-💾 Data Sources & Inspiration
+### 💾 Data Sources & Inspiration
 
 * **NYC TLC Trip Record Data:** For taxi density and hotspot simulation.
 
@@ -147,7 +149,7 @@ Pixabay Sound
 
 * **Cesium Sandcastle Examples:** For Bloom post-processing effects.
 
-🔬 Related Works & Inspiration
+### 🔬 Related Works & Inspiration
 
 * **NYC Taxi Visualization:** SIZMW/nyc-taxi-vis
 
@@ -173,6 +175,7 @@ QuarantineRush/
         ├── drone.png
         ├── gamedesign.png
         ├── loginpanel.png
+        ├── game.png
         └── quarantinerush.gif     
     ├── screenshot.png      
     ├── quarantinerush.gif  
