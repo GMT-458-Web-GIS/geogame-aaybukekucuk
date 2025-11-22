@@ -183,9 +183,8 @@ QuarantineRush/
         ├── gamedesign.png
         ├── loginpanel.png
         ├── game.png
+        ├── screenshot.png 
         └── quarantinerush.gif     
-    ├── screenshot.png      
-    ├── quarantinerush.gif  
     └── sound/              
         ├── start.mp3
         ├── alert.mp3
