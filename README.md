@@ -111,7 +111,7 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 
 ---
 
-## 7. AI Assistance Statement
+## 6. AI Assistance Statement
 
 The development of this project was supported by Artificial Intelligence tools (LLMs) used as coding assistants and co-pilots.
 
@@ -125,7 +125,7 @@ Note: All core game concepts, logic design, and final implementation decisions w
 
 ---
 
-## 8. References & Credits
+## 7. References & Credits
 
 The following resources, libraries, and datasets were consulted or used during development:
 
@@ -163,7 +163,7 @@ Pixabay Sound
 * **GeoGami Project:** geogami-team/geogami
 ---
 
-## 6. Project Directory Structure
+## 8. Project Directory Structure
 
 The project follows a modular file structure to separate logic, styles, and assets.
 
