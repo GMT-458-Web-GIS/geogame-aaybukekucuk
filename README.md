@@ -97,7 +97,7 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 * **Bottom Panel:** Houses the Chart.js analytics graph and status alerts (e.g., "🔥 COMBO x3").
 * **Theme:** Features a glassmorphism effect with neon accents suitable for a bio-hazard theme.
 
-### Gameplay Demo
+### Game Trailer
 
 ![QuarantineRush Gameplay](assets/image/quarantinerush.gif)
 
