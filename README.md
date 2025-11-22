@@ -102,6 +102,58 @@ The user interface is designed as a futuristic **HUD (Heads-Up Display)**:
 
 ---
 
+## 7. AI Assistance Statement
+
+The development of this project was supported by Artificial Intelligence tools (LLMs) used as coding assistants and co-pilots.
+
+* **Code Debugging:** AI helped identify syntax errors and debug logic issues in JavaScript functions.
+
+* **Optimization:** AI suggested methods to optimize the rendering loop for better performance with 3D tiles.
+
+* **Documentation:** AI assisted in structuring and refining technical documentation and this README.
+
+Note: All core game concepts, logic design, and final implementation decisions were made by the author.
+
+---
+
+## 8. References & Credits
+
+The following resources, libraries, and datasets were consulted or used during development:
+
+* 📚 Libraries & Documentation
+
+* **CesiumJS Documentation:** For 3D globe rendering, entity management, and camera flight logic.
+
+* **Turf.js API:** For geospatial analysis and collision detection.
+
+* **Chart.js Docs:** For implementing the live stacked area chart.
+
+* **MDN Web Audio API:** For integrating AudioContext sound effects.
+
+🎨 Assets & Design Resources
+
+* **Pixabay Sound Effects:** Royalty-free audio assets (start, alert, gameover, soundtrack).
+Pixabay Sound
+
+* **Google Fonts (Rajdhani):** Used for futuristic/cyberpunk typography.
+
+* **Coolors.co:** Consulted for Neon Cyan/Red palette.
+
+💾 Data Sources & Inspiration
+
+* **NYC TLC Trip Record Data:** For taxi density and hotspot simulation.
+
+* **Google Photorealistic 3D Tiles:** 3D model data via Cesium Ion.
+
+* **Cesium Sandcastle Examples:** For Bloom post-processing effects.
+
+🔬 Related Works & Inspiration
+
+* **NYC Taxi Visualization:** SIZMW/nyc-taxi-vis
+
+* **GeoGami Project:** geogami-team/geogami
+---
+
 ## 6. Project Directory Structure
 
 The project follows a modular file structure to separate logic, styles, and assets.
@@ -130,51 +182,3 @@ QuarantineRush/
         ├── gameover.mp3
         └── soundtrack.mp3
 
-7. AI Assistance Statement
-
-The development of this project was supported by Artificial Intelligence tools (LLMs) used as coding assistants and co-pilots.
-
-Code Debugging: AI helped identify syntax errors and debug logic issues in JavaScript functions.
-
-Optimization: AI suggested methods to optimize the rendering loop for better performance with 3D tiles.
-
-Documentation: AI assisted in structuring and refining technical documentation and this README.
-
-Note: All core game concepts, logic design, and final implementation decisions were made by the author.
-
-8. References & Credits
-
-The following resources, libraries, and datasets were consulted or used during development:
-
-📚 Libraries & Documentation
-
-CesiumJS Documentation: For 3D globe rendering, entity management, and camera flight logic.
-
-Turf.js API: For geospatial analysis and collision detection.
-
-Chart.js Docs: For implementing the live stacked area chart.
-
-MDN Web Audio API: For integrating AudioContext sound effects.
-
-🎨 Assets & Design Resources
-
-Pixabay Sound Effects: Royalty-free audio assets (start, alert, gameover, soundtrack).
-Pixabay Sound
-
-Google Fonts (Rajdhani): Used for futuristic/cyberpunk typography.
-
-Coolors.co: Consulted for Neon Cyan/Red palette.
-
-💾 Data Sources & Inspiration
-
-NYC TLC Trip Record Data: For taxi density and hotspot simulation.
-
-Google Photorealistic 3D Tiles: 3D model data via Cesium Ion.
-
-Cesium Sandcastle Examples: For Bloom post-processing effects.
-
-🔬 Related Works & Inspiration
-
-NYC Taxi Visualization: SIZMW/nyc-taxi-vis
-
-GeoGami Project: geogami-team/geogami
